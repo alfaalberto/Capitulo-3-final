@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histogramas Resultantes y Su Interpretación</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .chart-container {
+            height: 220px;
+            width: 100%;
+        }
+        .equation {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .histogram-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-4">
+                <h1 class="text-4xl font-bold text-gray-800">Histogramas Resultantes (Fig. 3.22)</h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Interpretación y comparación de los resultados</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-2"></div>
+            </div>
+            
+            <!-- Main Content - Histogram Grid -->
+            <div class="histogram-grid">
+                <!-- (a) Histogram of 3-bit image -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                        <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">a</span>
+                        Histograma de la imagen original
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="originalHistogram"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Imagen de 3 bits con valores de intensidad discretos</p>
+                </div>
+                
+                <!-- (b) Specified histogram -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                        <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">b</span>
+                        Histograma especificado
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="specifiedHistogram"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Distribución de intensidades objetivo</p>
+                </div>
+                
+                <!-- (c) Transformation function -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                        <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">c</span>
+                        Función de transformación G(z<sub>q</sub>)
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="transformFunction"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Mapeo escalonado de valores de intensidad</p>
+                </div>
+                
+                <!-- (d) Result of histogram specification -->
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                        <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">d</span>
+                        Resultado de la especificación
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="resultHistogram"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Histograma obtenido tras aplicar la transformación</p>
+                </div>
+            </div>
+            
+            <!-- Key Observations -->
+            <div class="mt-4">
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-search text-blue-600 mr-2"></i>Observaciones Clave
+                </h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-1">Comparativa de Histogramas</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>El histograma resultante (d) aproxima el histograma objetivo (b)</li>
+                            <li>Se redistribuyeron las intensidades hacia los tonos medios-altos</li>
+                            <li>Correspondencia entre (b) y (d): p<sub>z</sub>(z<sub>3</sub>) = 0.19, p<sub>z</sub>(z<sub>4</sub>) = 0.25, etc.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-1">Ecuación de Transformación</h4>
+                        <p class="equation text-center font-medium py-2">G(z<sub>q</sub>) = T(z<sub>q</sub>) = Σ<sub>k=0</sub><sup>q</sup> p<sub>z</sub>(z<sub>k</sub>)</p>
+                        <p class="text-gray-700 text-sm mt-1">La transformación no es estrictamente monótona para los primeros valores, requiriendo un tratamiento especial por igualdad de valores.</p>
+                        <p class="text-gray-700 text-sm mt-1">Este caso ilustra la importancia del algoritmo de selección para valores iguales.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conclusion -->
+            <div class="bg-gray-100 rounded-lg p-3 border border-gray-300 mt-4">
+                <p class="font-medium text-gray-800">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    Aunque el histograma resultante no coincide exactamente con el especificado, se logró el objetivo principal de redistribuir las intensidades según el patrón deseado. La especificación de histograma permite un control más preciso que la simple ecualización.
+                </p>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto mb-2 text-sm text-gray-600 flex justify-between items-center">
+                <p class="italic">Fig. 3.22: Comparación entre histogramas original, especificado y resultante</p>
+                <p>Ejemplo 3.7: Especificación de Histogramas</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        // Chart.js configurations for the histograms
+        window.onload = function() {
+            // (a) Original Histogram
+            const originalCtx = document.getElementById('originalHistogram').getContext('2d');
+            new Chart(originalCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                    datasets: [{
+                        label: 'Frecuencia relativa p_r(r_k)',
+                        data: [0.00, 0.00, 0.00, 0.19, 0.25, 0.21, 0.24, 0.11],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 0.30,
+                            title: {
+                                display: true,
+                                text: 'p_r(r_k)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'r_k'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // (b) Specified Histogram
+            const specifiedCtx = document.getElementById('specifiedHistogram').getContext('2d');
+            new Chart(specifiedCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                    datasets: [{
+                        label: 'Frecuencia relativa p_z(z_q)',
+                        data: [0.00, 0.00, 0.00, 0.15, 0.20, 0.30, 0.20, 0.15],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 0.30,
+                            title: {
+                                display: true,
+                                text: 'p_z(z_q)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'z_q'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // (c) Transformation Function
+            const transformCtx = document.getElementById('transformFunction').getContext('2d');
+            new Chart(transformCtx, {
+                type: 'line',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                    datasets: [{
+                        label: 'G(z_q)',
+                        data: [0, 0, 0, 1, 2, 5, 6, 7],
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                        borderColor: 'rgba(251, 191, 36, 1)',
+                        borderWidth: 3,
+                        fill: false,
+                        stepped: true,
+                        pointRadius: 6,
+                        pointBackgroundColor: 'rgba(251, 191, 36, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 7,
+                            title: {
+                                display: true,
+                                text: 'G(z_q)'
+                            },
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'z_q'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // (d) Result Histogram
+            const resultCtx = document.getElementById('resultHistogram').getContext('2d');
+            new Chart(resultCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                    datasets: [{
+                        label: 'Frecuencia relativa resultante p_z(z_q)',
+                        data: [0.00, 0.00, 0.00, 0.19, 0.25, 0.21, 0.24, 0.11],
+                        backgroundColor: 'rgba(220, 38, 38, 0.7)',
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 0.30,
+                            title: {
+                                display: true,
+                                text: 'p_z(z_q)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'z_q'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+
+
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Ejemplo_3_8_p6.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

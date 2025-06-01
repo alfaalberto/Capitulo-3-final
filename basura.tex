@@ -1,0 +1,519 @@
+\documentclass[10pt]{beamer}
+
+%------------------------------------------------------------
+% Configuraciones generales
+%------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel} % Para textos automáticos en español
+\usepackage{amsmath, amssymb} % Paquetes matemáticos
+\usepackage{graphicx} % Para incluir imágenes
+\usepackage{tikz} % Para dibujar gráficos
+\usetikzlibrary{arrows.meta, positioning, calc, matrix, fit, backgrounds, shapes.multipart}
+\usepackage{array} % Para mejorar tablas
+\usepackage{multicol} % Para usar múltiples columnas fuera del entorno columns de beamer
+% \usepackage{caption} % ELIMINADO - Beamer maneja captions. Puede causar conflictos.
+
+%------------------------------------------------------------
+% Tema y fuentes
+%------------------------------------------------------------
+\usetheme{Madrid} % Tema sobrio y profesional
+\usecolortheme{default}
+\usefonttheme{professionalfonts} % Fuentes profesionales
+
+% Ajuste de color para el cuerpo de los exampleblock para asegurar legibilidad
+\setbeamercolor{block body example}{bg=green!10!white, fg=black}
+% El tema Madrid ya define block title example con un verde oscuro y texto blanco,
+% pero si se quisiera forzar sería algo como:
+% \setbeamercolor{block title example}{bg=green!60!black, fg=white}
+
+
+%------------------------------------------------------------
+% Información de la presentación
+%------------------------------------------------------------
+\title[Filtrado Espacial]{Fundamentos del Filtrado Espacial}
+\subtitle{Procesamiento Digital de Imágenes}
+\author[Tu Nombre/Institución]{Nombre del Presentador \\ \textit{Institución/Departamento}}
+\institute[] % Puedes añadir tu instituto aquí si es diferente
+
+%------------------------------------------------------------
+% Comandos personalizados
+%------------------------------------------------------------
+\newcommand{\matlabel}[1]{\text{\scriptsize #1}}
+\newcommand{\eqnum}[1]{\tag{#1}} % Para numeración manual de ecuaciones como en el texto
+
+%------------------------------------------------------------
+% Inicio del documento
+%------------------------------------------------------------
+\begin{document}
+
+%------------------------------------------------------------
+% Diapositiva de título
+%------------------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%------------------------------------------------------------
+% Diapositiva de índice
+%------------------------------------------------------------
+\begin{frame}{Contenido}
+\tableofcontents
+\end{frame}
+
+%------------------------------------------------------------
+% Sección 1: Introducción al Filtrado Espacial
+%------------------------------------------------------------
+\section{Introducción al Filtrado Espacial}
+
+\begin{frame}{Definición y Propósito}
+\begin{block}{Filtrado Espacial}
+El \textbf{filtrado espacial} se refiere a la modificación del valor de cada píxel de una imagen en función de los valores del propio píxel y sus vecinos.
+\vspace{0.1cm}
+Es una técnica fundamental en el procesamiento de imágenes, utilizada principalmente para \textbf{realce (enhancement)} y restauración.
+\end{block}
+\vspace{0.1cm}
+El nombre "filtro" se toma del procesamiento en el \textbf{dominio de la frecuencia} (Capítulo 4 del material original), donde "filtrar" implica:
+\begin{itemize}
+\item Pasar, modificar o rechazar componentes de frecuencia específicos de una imagen.
+\item Ejemplo: Un \textit{filtro paso-bajas} atenúa las altas frecuencias, resultando en un suavizado o difuminado (blurring) de la imagen.
+\item Efectos similares de suavizado se pueden lograr directamente en el dominio espacial.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tipos de Filtros Espaciales}
+El filtrado espacial modifica una imagen reemplazando el valor de cada píxel por una función de los valores del píxel y sus vecinos.
+\vspace{0.3cm}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{alertblock}{Filtro Lineal Espacial}
+La operación realizada sobre los píxeles de la imagen es \textbf{lineal}.
+\vspace{0.1cm}
+Nos centraremos inicialmente en estos filtros.
+\end{alertblock}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{exampleblock}{Filtro No Lineal Espacial}
+La operación realizada sobre los píxeles es \textbf{no lineal}.
+\vspace{0.1cm}
+Se introducirán algunos filtros no lineales básicos más adelante (referencia a Sección 5.3 del material original).
+\end{exampleblock}
+\end{column}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------------------
+% Sección 2: Mecánica del Filtrado Espacial Lineal
+%------------------------------------------------------------
+\section{Mecánica del Filtrado Lineal}
+
+\begin{frame}{El Kernel del Filtro}
+Un filtro espacial lineal realiza una operación de \textbf{suma de productos} entre una sub-área de la imagen $f$ y una matriz llamada \textbf{kernel de filtro} $w$.
+\begin{itemize}
+\item El \textbf{kernel} (o núcleo) es un arreglo (generalmente 2D) de coeficientes.
+\item Sus \textbf{coeficientes} determinan la naturaleza y el comportamiento del filtro (e.g., suavizado, realce de bordes).
+\item El \textbf{tamaño del kernel} define la vecindad de píxeles considerada para cada operación.
+\item \textbf{Otros términos comunes} para el kernel:
+{\footnotesize
+\begin{itemize}
+\item Máscara (mask)
+\item Plantilla (template)
+\item Ventana (window)
+\end{itemize}
+}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Operación con un Kernel $3 \times 3$}\tiny
+\begin{block}{Respuesta del Filtro $g(x,y)$}
+En cualquier punto $(x,y)$ de la imagen, la respuesta $g(x,y)$ del filtro es la suma de productos de los coeficientes del kernel y los píxeles de la imagen cubiertos por el kernel:
+\begin{align}
+g(x,y) = &w(-1,-1)f(x-1,y-1) + w(-1,0)f(x-1,y) + w(-1,1)f(x-1,y+1) \nonumber \\
+&+ w(0,-1)f(x,y-1)   + w(0,0)f(x,y)     + w(0,1)f(x,y+1) \nonumber \\
+&+ w(1,-1)f(x+1,y-1)   + w(1,0)f(x+1,y)     + w(1,1)f(x+1,y+1) \eqnum{3-30}
+\end{align}
+\end{block}
+\vspace{0.1cm}
+{\footnotesize
+\begin{itemize}
+\item A medida que las coordenadas $x$ e $y$ varían, el centro del kernel se mueve de píxel a píxel, generando la imagen filtrada $g$.
+\item El coeficiente central del kernel, $w(0,0)$, se alinea con el píxel en la ubicación $(x,y)$ de la imagen original $f$.
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Ilustración del Filtrado Lineal (Fig. 3.28)}
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.7}]
+% Imagen f
+\node[draw, minimum width=3.5cm, minimum height=3cm, label=above:{Imagen $f$}] (img_f) at (-2.5,0) {};
+\node[font=\tiny, align=center] at (img_f.center) {Píxeles};
+\draw[gray, thin] (img_f.north west) grid (img_f.south east);
+\node[font=\tiny, below left] at (img_f.north west) {Origen img.};
+
+% Kernel w
+\node[draw, minimum size=1.2cm, label=above:{Kernel $w$}] (kernel_w) at (2.5,1.5) {};
+\matrix (kernel_matrix) [matrix of math nodes, nodes={draw, minimum size=0.4cm, scale=0.6}, ampersand replacement=\&, at=(kernel_w.center)] {
+w_{-1,-1} \& w_{-1,0} \& w_{-1,1} \\
+w_{0,-1} \& w_{0,0} \& w_{0,1} \\
+w_{1,-1} \& w_{1,0} \& w_{1,1} \\
+};
+\node[circle, fill=red, inner sep=0.5pt, label={[scale=0.6]right:Origen ker.}] at (kernel_matrix-2-2.center) {};
+
+% Detalle de superposición
+\begin{scope}[xshift=2.5cm, yshift=-1.5cm]
+\node[draw, label=above:{\tiny Píxeles bajo kernel en $(x,y)$}] (pixel_grid_label) {};
+\matrix (pixel_grid) [matrix of math nodes, nodes={draw, minimum size=0.6cm, scale=0.6}, ampersand replacement=\&, below=0.05cm of pixel_grid_label] {
+f(x-1,y-1) \& f(x-1,y) \& f(x-1,y+1) \\
+f(x,y-1)   \& f(x,y)   \& f(x,y+1) \\
+f(x+1,y-1) \& f(x+1,y) \& f(x+1,y+1) \\
+};
+\node[font=\tiny, red, scale=0.6] at (pixel_grid-2-2) {$w(0,0)$ aquí};
+\end{scope}
+
+\draw[-latex, thick, blue] ($(img_f.east)+(0.1,0)$) to [bend left=10] node[midway, above, sloped, scale=0.6] {Deslizamiento} ($(kernel_w.west)-(0.1,0)$);
+\end{tikzpicture}
+\caption{\footnotesize Mecánica del filtrado espacial lineal (conceptual, Fig. 3.28). El kernel se desliza sobre la imagen, calculando la suma de productos en $(x,y)$.}
+\end{figure}
+\begin{alertblock}{\footnotesize Orígenes}
+{\footnotesize El origen de la imagen suele ser la esquina superior izquierda. Para simplificar las expresiones, el origen del kernel se define en su centro, especialmente para kernels simétricos.}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Expresión General y Tamaño del Kernel}
+Para un kernel de tamaño $m \times n$, se asume que $m = 2a+1$ y $n = 2b+1$, donde $a, b$ son enteros no negativos. Esto implica que nos centramos en kernels de \textbf{tamaño impar} en ambas direcciones.
+\vspace{0.1cm}
+El filtrado espacial lineal de una imagen de tamaño $M \times N$ con un kernel de $m \times n$ está dado por:
+\begin{equation}
+g(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t)f(x+s,y+t) \eqnum{3-31}
+\end{equation}
+Donde $x$ e $y$ varían para que el centro (origen) del kernel visite cada píxel en $f$.
+\vspace{0.1cm}
+\begin{exampleblock}{\footnotesize Herramienta Central}
+{\footnotesize La ecuación (3-31) es una herramienta central en el filtrado lineal. Para un valor fijo de $(x,y)$, implementa la suma de productos como en (3-30), pero para un kernel de tamaño impar arbitrario.}
+\end{exampleblock}
+\end{frame}
+
+%------------------------------------------------------------
+% Sección 3: Correlación y Convolución Espacial
+%------------------------------------------------------------
+\section{Correlación y Convolución}
+
+\begin{frame}[fragile]{Definición de Correlación Espacial}
+La \textbf{correlación espacial} es el proceso ilustrado gráficamente en la Fig. 3.28 y descrito matemáticamente por la Ec. (3-31).
+{\footnotesize
+\begin{itemize}
+\item Consiste en mover el centro de un kernel sobre una imagen.
+\item En cada ubicación, se calcula la suma de productos entre los coeficientes del kernel y los píxeles correspondientes de la imagen.
+\end{itemize}
+}
+\vspace{0.1cm}
+La correlación de un kernel $w$ con una imagen $f(x,y)$, denotada $(w \star f)(x,y)$, es:
+\begin{equation}
+(w \star f)(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t)f(x+s,y+t) \eqnum{3-34}
+\end{equation}
+\vspace{0.1cm}
+Para el caso 1D, la Ec. (3-31) se convierte en:
+\begin{equation}
+g(x) = \sum_{s=-a}^{a} w(s)f(x+s) \eqnum{3-32}
+\end{equation}
+\end{frame}
+
+\begin{frame}[fragile]{Definición de Convolución Espacial}
+La mecánica de la \textbf{convolución espacial} es la misma que la correlación, con una diferencia clave:
+{\footnotesize
+\begin{itemize}
+\item El kernel de correlación se \textbf{rota 180°} antes de realizar la operación de deslizamiento y suma de productos.
+\end{itemize}
+}
+\vspace{0.1cm}
+La convolución de un kernel $w$ de tamaño $m \times n$ con una imagen $f(x,y)$, denotada $(w * f)(x,y)$, se define como:
+\begin{equation}
+(w * f)(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t)f(x-s,y-t) \eqnum{3-35}
+\end{equation}
+\begin{alertblock}{\footnotesize Interpretación de los Signos}
+{\footnotesize Los signos negativos en los argumentos de $f(x-s, y-t)$ alinean las coordenadas de $f$ y $w$ cuando una de las funciones se rota 180°. Esta ecuación implementa el proceso que se conoce como \textbf{filtrado espacial lineal}.}
+\end{alertblock}
+\textbf{\footnotesize Filtrado espacial lineal y convolución espacial son sinónimos.}
+\end{frame}
+
+\begin{frame}{Manejo de Bordes: Padding}
+{\footnotesize
+Cuando el kernel se superpone con los bordes de la imagen, algunos de sus coeficientes caen fuera del área de la imagen.
+\begin{itemize}
+\item La suma de productos queda indefinida en estas áreas.
+\item \textbf{Solución: Padding (Relleno)}. Consiste en añadir píxeles alrededor de la imagen.
+\item \textbf{Zero-padding}: El método más común es rellenar con ceros.
+\item Si el kernel es de tamaño $1 \times m$ (en 1D), se necesitan $(m-1)/2$ ceros a cada lado de la función $f$.
+\item Para un kernel 2D de $m \times n$, se rellena con un mínimo de $(m-1)/2$ filas de ceros arriba/abajo y $(n-1)/2$ columnas de ceros a izquierda/derecha.
+\item El padding asegura que el centro del kernel pueda visitar cada píxel de la imagen original.
+\end{itemize}
+\begin{exampleblock}{Otras opciones de padding}
+Existen otras estrategias de padding además del relleno con ceros (e.g., replicar bordes, padding simétrico), que se discuten en detalle en otras partes del material original.
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Correlación/Convolución con un Impulso Discreto}
+Un \textbf{impulso unitario discreto} es una función que es 1 en una ubicación y 0 en todas las demás.
+Para una imagen 2D, un impulso de amplitud $A$ en $(x_0, y_0)$ es:
+\begin{equation}
+\delta(x-x_0, y-y_0) = \begin{cases} A & \text{si } x=x_0, y=y_0 \\ 0 & \text{en otro caso} \end{cases} \eqnum{3-33}
+\end{equation}
+(Para un impulso unitario, $A=1$).
+\vspace{0.1cm}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{block}{\footnotesize Correlación con un Impulso}
+{\footnotesize Correlacionar un kernel $w$ con un impulso unitario discreto produce una copia de $w$ \textbf{rotada 180°} en la ubicación del impulso.}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{alertblock}{\footnotesize Convolución con un Impulso}
+{\footnotesize Convolucionar un kernel (o cualquier función) $w$ con un impulso unitario discreto produce una \textbf{copia exacta} de $w$ en la ubicación del impulso. Propiedad fundamental en sistemas lineales.}
+\end{alertblock}
+\end{column}
+\end{columns}
+\vspace{0.1cm}
+\textit{\tiny Nota: Figuras 3.29 y 3.30 del texto original ilustran estos procesos detalladamente para casos 1D y 2D.}
+\end{frame}
+
+\begin{frame}{Ilustración Conceptual (Fig. 3.29 y 3.30)}
+{\footnotesize
+\begin{block}{Idea Principal de Fig. 3.29 (1D) y Fig. 3.30 (2D)}
+Estas figuras muestran secuencias paso a paso de:
+\begin{itemize}
+\item Una función/imagen $f$ (que es un impulso unitario).
+\item Un kernel $w$ (no necesariamente simétrico).
+\item El proceso de padding de $f$.
+\item \textbf{Correlación}:
+\begin{itemize}
+\item Deslizamiento del kernel $w$ sobre $f$ (paddeada).
+\item Cálculo de la suma de productos en cada desplazamiento.
+\item Resultado: versión del kernel $w$ \textbf{rotada 180°}, centrada en la posición original del impulso.
+\end{itemize}
+\item \textbf{Convolución}:
+\begin{itemize}
+\item El kernel $w$ se rota 180° \textit{antes} del proceso de deslizamiento.
+\item Deslizamiento del kernel $w_{rotado}$ sobre $f$ (paddeada).
+\item Cálculo de la suma de productos.
+\item Resultado: copia \textbf{exacta} del kernel $w$ original, centrada en la posición del impulso.
+\end{itemize}
+\end{itemize}
+\end{block}
+\begin{exampleblock}{Simetría del Kernel}
+Si el kernel $w$ es simétrico respecto a su centro (i.e., $w$ es igual a $w$ rotado 180°), entonces la correlación y la convolución producen el mismo resultado.
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Tamaño del Resultado: "Full" vs "Same"}
+{\footnotesize
+La cantidad de padding afecta el tamaño de la imagen resultante $g(x,y)$.
+\begin{itemize}
+\item \textbf{Padding para "Same" output}: Si se paddea la imagen $f$ tal que el centro del kernel visita cada píxel original de $f$ y la imagen resultante $g$ tiene el \textit{mismo tamaño} que $f$. Es el caso más común. Se necesitan $(m-1)/2$ y $(n-1)/2$ elementos de padding.
+\item \textbf{Padding para "Full" output}: Si se desea que \textit{cada elemento} del kernel $w$ ($m \times n$) visite cada píxel de la imagen $f$ ($M \times N$).
+\begin{itemize}
+\item Requiere más padding: $(m-1)$ filas y $(n-1)$ columnas.
+\item El tamaño del arreglo resultante $(S_v \times S_h)$ es:
+\begin{align}
+S_v &= M + m - 1 \eqnum{3-36} \\
+S_h &= N + n - 1 \eqnum{3-37}
+\end{align}
+\end{itemize}
+\end{itemize}
+\textit{Nota: En Ecs. (3-36) y (3-37) del texto, $M,N$ son dims. de imagen y $m,n$ del kernel.}
+}
+\end{frame}
+
+\begin{frame}{Consideraciones Algorítmicas}
+{\footnotesize
+\begin{itemize}
+\item Muchos algoritmos de filtrado espacial están basados en la correlación (Ec. 3-34).
+\item Para usar un algoritmo de \textbf{correlación} para realizar \textbf{convolución}: se introduce el kernel $w$ rotado 180°.
+\item Para usar un algoritmo de \textbf{convolución} (Ec. 3-35) para realizar \textbf{correlación}: se introduce el kernel $w$ rotado 180° (menos común).
+\item Es decir, cualquiera de las Ecs. (3-34) o (3-35) puede realizar la función de la otra rotando el kernel.
+\item \textbf{Importante}: El orden de las funciones en un algoritmo de correlación sí importa, porque la correlación no es conmutativa ni asociativa (ver Tabla 3.5).
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Propiedades Fundamentales (Tabla 3.5)}
+\begin{table}
+\centering
+\caption{\footnotesize Propiedades fundamentales de la convolución y correlación.}
+\begin{tabular}{l|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}}
+\hline
+\textbf{\scriptsize Propiedad} & \textbf{\scriptsize Convolución ($*$)} & \textbf{\scriptsize Correlación ($\star$)} \\
+\hline \hline
+\scriptsize Conmutativa & \scriptsize $f*g = g*f$ & \scriptsize --- \\
+\scriptsize Asociativa & \scriptsize $f*(g*h) = (f*g)*h$ & \scriptsize --- \\
+\scriptsize Distributiva & \scriptsize $f*(g+h) = (f*g) + (f*h)$ & \scriptsize $f \star (g+h) = (f \star g) + (f \star h)$ \\
+\hline
+\end{tabular}
+\vspace{0.1cm}
+\tiny (Un "---" indica que la propiedad no se cumple.)
+\end{table}
+\vspace{0.1cm}
+\begin{alertblock}{\footnotesize Relevancia de las Propiedades de la Convolución}
+{\footnotesize La conmutatividad y asociatividad de la convolución son cruciales:
+\begin{itemize}
+\item Permiten el \textbf{filtrado secuencial} eficiente.
+\item Son la base de la \textbf{teoría de sistemas lineales e invariantes al desplazamiento (LSI)}.
+\item Permiten la \textbf{separabilidad de kernels} (kernel 2D $\rightarrow$ dos convoluciones 1D).
+\end{itemize}
+}
+\end{alertblock}
+\end{frame}
+
+%------------------------------------------------------------
+% Sección 4: Kernels de Filtrado y Filtrado Secuencial
+%------------------------------------------------------------
+\section{Kernels y Filtrado Secuencial}
+
+\begin{frame}[fragile]{Ejemplos de Kernels de Suavizado (Fig. 3.31)}
+{\footnotesize
+Los kernels de suavizado (filtros paso-bajas) se usan para reducir ruido y difuminar detalles.
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{(a) Box Kernel (Promediador):}
+\begin{center}
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
+\node[left=0.05cm] {$\frac{1}{9} \times$};
+\matrix (box) [matrix of math nodes, nodes={draw, minimum size=0.6cm}, right=0.05cm of current bounding box.west, anchor=west, ampersand replacement=\&] {
+1 \& 1 \& 1 \\
+1 \& 1 \& 1 \\
+1 \& 1 \& 1 \\
+};
+\end{tikzpicture}
+\end{center}
+\tiny Reemplaza cada píxel por el promedio de su vecindad $3 \times 3$. Todos los coeficientes son iguales.
+\end{column}
+\begin{column}{0.04\textwidth} \end{column} % Separador
+\begin{column}{0.48\textwidth}
+\textbf{(b) Gaussian Kernel (Ponderado):}
+\begin{center}
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
+\node[left=0.05cm] {$\frac{1}{4.8976} \times$};
+\matrix (gauss) [matrix of math nodes, nodes={draw, minimum size=0.6cm, inner sep=1pt}, right=0.05cm of current bounding box.west, anchor=west, ampersand replacement=\&] {
+0.3679 \& 0.6065 \& 0.3679 \\
+0.6065 \& 1.0000 \& 0.6065 \\
+0.3679 \& 0.6065 \& 0.3679 \\
+};
+\end{tikzpicture}
+\end{center}
+\tiny Los coeficientes siguen una Gaussiana. Dan más peso a píxeles centrales. Factor de norm. es suma de coefs.
+\end{column}
+\end{columns}
+\vspace{0.1cm}
+\begin{block}{\tiny Nota sobre Simetría} % Cambiado a tiny para el título del bloque también
+\tiny Ambos kernels son simétricos respecto a su centro. Por lo tanto, para estos kernels, la correlación y la convolución producirían el mismo resultado. No se requiere rotación previa para la convolución.
+\end{block}
+}
+\end{frame}
+
+\begin{frame}{Terminología en la Literatura}
+{\footnotesize
+Es común encontrar una terminología algo imprecisa:
+\begin{itemize}
+\item \textbf{"Filtro de convolución", "máscara de convolución", "kernel de convolución"} a menudo se usan para denotar un kernel de filtro espacial, sin implicar necesariamente que el kernel se use estrictamente para la operación matemática de convolución (podría usarse en una correlación).
+\item \textbf{"Convolucionar un kernel con una imagen"} se usa frecuentemente de manera genérica para referirse al proceso de deslizamiento y suma de productos, sin diferenciar estrictamente entre correlación y convolución.
+\end{itemize}
+\begin{alertblock}{En este contexto (y en gran parte de la teoría de procesamiento de imágenes):}
+Cuando se habla de \textbf{filtrado espacial lineal}, se refiere a la \textbf{convolución} de un kernel con una imagen.
+\end{alertblock}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Filtrado Secuencial}
+Una imagen $f$ puede ser filtrada secuencialmente, en $Q$ etapas, usando un kernel diferente ($w_1, w_2, \dots, w_Q$) en cada etapa:
+$f \xrightarrow{w_1} g_1 \xrightarrow{w_2} g_2 \dots \xrightarrow{w_Q} g_Q$
+\vspace{0.1cm}
+Debido a la propiedad \textbf{asociativa} de la convolución, esta operación multi-etapa es equivalente a una única operación de filtrado $w*f$, donde el kernel efectivo $w$ es la convolución de todos los kernels individuales:
+\begin{equation}
+w = w_1 * w_2 * w_3 * \dots * w_Q \eqnum{3-38}
+\end{equation}
+\vspace{0.1cm}
+\begin{exampleblock}{\footnotesize Importancia}
+{\footnotesize Esto permite, por ejemplo, diseñar filtros complejos a partir de filtros más simples, o analizar el efecto combinado de varias operaciones de filtrado. No se podría escribir una ecuación similar para la correlación debido a su falta de asociatividad.}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Tamaño del Kernel en Filtrado Secuencial}
+{\footnotesize
+Si todos los kernels individuales $w_i$ en un filtrado secuencial de $Q$ etapas son de tamaño $m \times n$, y se asume convolución "full" en cada paso intermedio (es decir, cada valor de un kernel visita cada valor del arreglo resultante del paso anterior), el kernel combinado $w$ (de la Ec. 3-38) será de tamaño $W_v \times W_h$:
+\begin{align}
+W_v &= Q \times (m-1) + m \eqnum{3-39} \\
+W_h &= Q \times (n-1) + n \eqnum{3-40}
+\end{align}
+\vspace{0.1cm}
+\begin{itemize}
+\item Estas ecuaciones se derivan de aplicaciones sucesivas de las Ecs. (3-36) y (3-37) para el tamaño de una convolución "full".
+\item Ejemplo: Si $Q=2$ kernels de $3 \times 3$ ($m=3, n=3$):
+\begin{itemize}
+\item $W_v = 2 \times (3-1) + 3 = 2 \times 2 + 3 = 7$
+\item $W_h = 2 \times (3-1) + 3 = 2 \times 2 + 3 = 7$
+\item El kernel combinado $w = w_1 * w_2$ sería de $7 \times 7$.
+\end{itemize}
+\end{itemize}
+}
+\end{frame}
+
+%------------------------------------------------------------
+% Sección 5: Resumen y Conclusiones
+%------------------------------------------------------------
+\section{Resumen y Conclusiones}
+
+\begin{frame}{Puntos Clave del Filtrado Espacial Lineal}
+{\footnotesize
+\begin{itemize}
+\item Modifica píxeles mediante una \textbf{suma de productos} con un \textbf{kernel}.
+\item La \textbf{correlación} $(w \star f)(x,y) = \sum \sum w(s,t)f(x+s,y+t)$ es la aplicación directa de esta suma.
+\item La \textbf{convolución} $(w * f)(x,y) = \sum \sum w(s,t)f(x-s,y-t)$ implica rotar el kernel 180° (o ajustar índices) y es la base del filtrado lineal.
+\item Operar con un \textbf{impulso unitario} revela la diferencia:
+\begin{itemize}
+\item Correlación $\rightarrow$ kernel rotado.
+\item Convolución $\rightarrow$ kernel original.
+\end{itemize}
+\item El \textbf{padding} es crucial para manejar los bordes de la imagen y controlar el tamaño de la salida.
+\item La convolución es \textbf{conmutativa y asociativa}, propiedades vitales para la teoría de sistemas y el filtrado secuencial eficiente.
+\item El tamaño del kernel resultante de un filtrado secuencial puede determinarse a partir de los tamaños de los kernels individuales.
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Conclusiones}
+\begin{block}{\footnotesize Importancia del Filtrado Espacial}
+{\footnotesize El filtrado espacial lineal, fundamentado en la operación de convolución, es una de las herramientas más versátiles y fundamentales en el procesamiento digital de imágenes.
+\vspace{0.1cm}
+Comprender su mecánica, la diferencia entre correlación y convolución, y las propiedades de estas operaciones es esencial para:
+\begin{itemize}
+\item Diseñar y aplicar filtros para una amplia gama de tareas (suavizado, realce de bordes, detección de características, etc.).
+\item Analizar el comportamiento de sistemas de procesamiento de imágenes.
+\item Desarrollar algoritmos eficientes.
+\end{itemize}
+}
+\end{block}
+\vspace{0.1cm}
+\begin{alertblock}{\footnotesize Próximos Pasos}
+{\footnotesize Las secciones y capítulos subsecuentes del material original explorarán tipos específicos de filtros espaciales (lineales y no lineales) y sus aplicaciones, así como el filtrado en el dominio de la frecuencia.}
+\end{alertblock}
+\end{frame}
+
+
+%------------------------------------------------------------
+% Diapositiva final
+%------------------------------------------------------------
+\begin{frame}
+\centering
+\vspace*{\fill}
+\Huge{\textbf{¿Preguntas?}}
+\vspace{0.5cm}
+\Large{¡Gracias por su atención!}
+\vspace*{\fill}
+\end{frame}
+
+%------------------------------------------------------------
+% Fin del documento
+%------------------------------------------------------------
+\end{document}

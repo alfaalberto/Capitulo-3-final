@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos del Filtrado Espacial</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #e6f7ff 100%);
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0a4d8c;
+            line-height: 1.2;
+        }
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #0a4d8c, #2d8cd5);
+        }
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30%;
+            height: 100%;
+            opacity: 0.06;
+            background-image: 
+                linear-gradient(#0a4d8c 1px, transparent 1px),
+                linear-gradient(90deg, #0a4d8c 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .concept-card {
+            background: white;
+            border-left: 5px solid #0a4d8c;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .filter-type {
+            background: rgba(45, 140, 213, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(45, 140, 213, 0.3);
+        }
+        .filter-icon {
+            font-size: 1.8rem;
+            color: #0a4d8c;
+        }
+        .concept-title {
+            color: #0a4d8c;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        .concept-text {
+            color: #444;
+            line-height: 1.4;
+        }
+        .diagram-container {
+            position: relative;
+            height: 220px;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col">
+        <div class="accent-bar w-full"></div>
+        <div class="grid-pattern"></div>
+        
+        <div class="flex flex-col px-16 py-10 z-10">
+            <h1 class="title mb-6">3.4 Fundamentos del Filtrado Espacial</h1>
+            
+            <div class="flex flex-col space-y-6">
+                <!-- Key concept card -->
+                <div class="concept-card p-5">
+                    <div class="concept-title mb-2">¿Qué es el filtrado espacial?</div>
+                    <p class="concept-text">Modifica una imagen reemplazando cada valor de píxel con una función de los valores del píxel y sus vecinos. Se utiliza en múltiples aplicaciones de procesamiento de imágenes.</p>
+                </div>
+                
+                <!-- Filter types -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="filter-type p-5">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-equals filter-icon mr-3"></i>
+                            <span class="concept-title">Filtro Espacial Lineal</span>
+                        </div>
+                        <ul class="list-disc ml-5 concept-text">
+                            <li>Operación lineal sobre píxeles</li>
+                            <li>Ejemplo: Filtro pasa bajas (lowpass)</li>
+                            <li>Se usa para suavizar imágenes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="filter-type p-5">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-bezier-curve filter-icon mr-3"></i>
+                            <span class="concept-title">Filtro Espacial No Lineal</span>
+                        </div>
+                        <ul class="list-disc ml-5 concept-text">
+                            <li>Operación no lineal sobre píxeles</li>
+                            <li>Aplicaciones especializadas</li>
+                            <li>Tratados en detalle en Sección 5.3</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Concept diagram -->
+                <div class="diagram-container bg-white p-5 rounded-lg border border-blue-200">
+                    <div class="flex items-start justify-between">
+                        <div class="w-1/2 pr-4 border-r border-blue-100">
+                            <div class="concept-title mb-3">Origen del término "filtro"</div>
+                            <p class="concept-text">Proviene del procesamiento en dominio de frecuencia, donde "filtrar" se refiere a pasar, modificar o rechazar componentes de frecuencia específicos de una imagen.</p>
+                        </div>
+                        <div class="w-1/2 pl-4">
+                            <div class="concept-title mb-3">Principio básico</div>
+                            <div class="flex items-center justify-center h-full">
+                                <div class="text-center">
+                                    <i class="fas fa-image text-5xl text-blue-300 mb-2"></i>
+                                    <i class="fas fa-arrow-right text-2xl text-blue-500 mx-3"></i>
+                                    <i class="fas fa-filter text-5xl text-blue-500 mx-1"></i>
+                                    <i class="fas fa-arrow-right text-2xl text-blue-500 mx-3"></i>
+                                    <i class="fas fa-image text-5xl text-blue-600"></i>
+                                    <p class="mt-2 text-sm text-gray-600">Proceso de filtrado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-blue-800 text-white p-4 mt-auto">
+            <div class="flex justify-between items-center">
+                <div>Procesamiento Digital de Imágenes</div>
+                <div>2</div>
+            </div>
+        </div>
+    </div>
+
+    </script>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_p3.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

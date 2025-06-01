@@ -1,0 +1,4 @@
+\babel@toc {spanish}{}\relax 
+\beamer@sectionintoc {1}{Introducción al Bit-Plane Slicing}{2}{0}{1}
+\beamer@sectionintoc {2}{Descomposición y Análisis}{4}{0}{2}
+\beamer@sectionintoc {3}{Reconstrucción y Aplicaciones}{6}{0}{3}

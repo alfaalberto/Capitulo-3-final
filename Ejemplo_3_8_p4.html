@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeo de Valores de Intensidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .mapping-arrow {
+            color: #3b82f6;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .table-header {
+            background-color: #e5e7eb;
+        }
+        .chart-container {
+            height: 280px;
+        }
+        .code-block {
+            font-family: 'Fira Mono', monospace;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            padding: 0.5rem;
+        }
+        .mapping-box {
+            background-color: #f0f9ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 8px 16px;
+            position: relative;
+        }
+        .mapping-box::after {
+            content: "→";
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .equation {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold text-gray-800">Mapeo de Intensidades s<sub>k</sub> → z<sub>q</sub></h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Transformación de niveles de intensidad en la imagen</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-3"></div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="grid grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div>
+                    <!-- Mapping Table -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-exchange-alt text-blue-600 mr-2"></i>Tabla de Mapeo de Intensidades
+                        </h3>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-blue-100">
+                                        <th class="border border-blue-200 px-6 py-3 text-center text-lg font-bold text-blue-800">s<sub>k</sub></th>
+                                        <th class="border border-blue-200 px-6 py-3 text-center text-lg font-bold text-blue-800">→</th>
+                                        <th class="border border-blue-200 px-6 py-3 text-center text-lg font-bold text-blue-800">z<sub>q</sub></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-blue-50">
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">1</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center text-blue-600">→</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">3</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50">
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">3</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center text-blue-600">→</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">4</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50">
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">5</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center text-blue-600">→</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">5</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50">
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">6</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center text-blue-600">→</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">6</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50">
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">7</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center text-blue-600">→</td>
+                                        <td class="border border-blue-200 px-6 py-3 text-center font-medium text-lg">7</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2 italic">Tabla 3.4: Mapeo de valores s<sub>k</sub> a z<sub>q</sub> correspondientes</p>
+                    </div>
+                    
+                    <!-- Explanation -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>Procedimiento
+                        </h3>
+                        <div class="bg-blue-50 rounded-lg border border-blue-200 p-4 space-y-3">
+                            <p class="text-gray-700">Para cada valor de s<sub>k</sub>, buscamos el valor de z<sub>q</sub> tal que:</p>
+                            <p class="equation text-center text-lg font-medium py-2">G(z<sub>q</sub>) es el valor más cercano a s<sub>k</sub></p>
+                            <p class="text-gray-700">Donde G(z<sub>q</sub>) es la función de transformación que obtuvimos previamente.</p>
+                            <p class="text-gray-700 mt-3">Por ejemplo:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Para s<sub>0</sub> = 1, G(z<sub>3</sub>) = 1 → Mapeo perfecto</li>
+                                <li>Para s<sub>1</sub> = 3, G(z<sub>4</sub>) = 2 es el valor más cercano</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div>
+                    <!-- Visualization -->
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">
+                        <i class="fas fa-chart-line text-blue-600 mr-2"></i>Visualización del Mapeo
+                    </h3>
+                    <div class="chart-container mb-5">
+                        <canvas id="mappingChart"></canvas>
+                    </div>
+                    
+                    <!-- Application -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-cogs text-blue-600 mr-2"></i>Aplicación en la Imagen
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                            <div class="flex flex-col space-y-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <div class="bg-blue-50 rounded-lg border border-blue-200 p-3 w-40 text-center">
+                                        <p class="font-bold text-lg">Imagen Original</p>
+                                        <p class="text-sm text-gray-600">Intensidad s<sub>k</sub></p>
+                                    </div>
+                                    <div class="text-blue-600 text-2xl">→</div>
+                                    <div class="bg-blue-50 rounded-lg border border-blue-200 p-3 w-64 text-center">
+                                        <p class="font-bold text-lg">Mapeo Tabla 3.4</p>
+                                        <p class="text-sm text-gray-600">s<sub>k</sub> → z<sub>q</sub></p>
+                                    </div>
+                                    <div class="text-blue-600 text-2xl">→</div>
+                                    <div class="bg-blue-50 rounded-lg border border-blue-200 p-3 w-40 text-center">
+                                        <p class="font-bold text-lg">Imagen Final</p>
+                                        <p class="text-sm text-gray-600">Histograma especificado</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-3 rounded-lg border border-gray-300">
+                                    <p class="font-medium">Si 790 píxeles en la imagen original tienen valor s<sub>k</sub> = 1, estos se mapean a z<sub>q</sub> = 3 en la imagen resultante.</p>
+                                    <p class="font-medium mt-2">Por tanto: p<sub>z</sub>(z<sub>3</sub>) = 790/4096 = 0.19</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 text-sm mt-3">Nota: El resultado final no coincide exactamente con el histograma especificado, pero logra el objetivo principal de redistribuir las intensidades.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Points -->
+                    <div class="mt-5">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-key text-blue-600 mr-2"></i>Puntos Clave
+                        </h3>
+                        <div class="bg-blue-50 rounded-lg border border-blue-200 p-3">
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Este mapeo es el paso final del proceso de especificación de histogramas</li>
+                                <li>Permite transformar cada píxel de la imagen ecualizada al histograma deseado</li>
+                                <li>El resultado es una redistribución controlada de las intensidades</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto mb-2 text-sm text-gray-600 italic">
+                <p>El mapeo directo entre intensidades permite evitar el proceso de dos pasos (ecualización seguida de especificación inversa).</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        // Mapping Chart
+        const ctx = document.getElementById('mappingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Mapeo sk → zq',
+                    data: [
+                        {x: 1, y: 3},
+                        {x: 3, y: 4},
+                        {x: 5, y: 5},
+                        {x: 6, y: 6},
+                        {x: 7, y: 7}
+                    ],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    pointRadius: 8,
+                    pointHoverRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `sk = ${context.parsed.x} → zq = ${context.parsed.y}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Valor de intensidad sk',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        min: 0,
+                        max: 8,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Valor mapeado zq',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        min: 0,
+                        max: 8,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0.3
+                    }
+                }
+            }
+        });
+    </script>
+
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Ejemplo_3_8_p5.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

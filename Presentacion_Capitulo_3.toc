@@ -1,0 +1,19 @@
+\babel@toc {spanish}{}\relax 
+\beamer@sectionintoc {1}{Introducción y Conceptos Fundamentales}{3}{0}{1}
+\beamer@sectionintoc {2}{Principios Básicos de Transformaciones de Intensidad y Filtrado Espacial}{5}{0}{2}
+\beamer@sectionintoc {3}{Acerca de los Ejemplos en este Capítulo}{10}{0}{3}
+\beamer@sectionintoc {4}{Introducción al Bit-Plane Slicing}{30}{0}{4}
+\beamer@sectionintoc {5}{Descomposición y Análisis}{32}{0}{5}
+\beamer@sectionintoc {6}{Reconstrucción y Aplicaciones}{34}{0}{6}
+\beamer@sectionintoc {7}{Definición y Propiedades del Histograma}{38}{0}{7}
+\beamer@sectionintoc {8}{Ecualización Discreta y Ejemplos}{50}{0}{8}
+\beamer@sectionintoc {9}{Resumen y Aplicaciones}{57}{0}{9}
+\beamer@sectionintoc {10}{Resumen y Aplicaciones (General)}{70}{0}{10}
+\beamer@sectionintoc {11}{Datos Iniciales y Pasos del Proceso}{74}{0}{11}
+\beamer@sectionintoc {12}{Resultados Gráficos (Figura 3.22 del libro)}{78}{0}{12}
+\beamer@sectionintoc {13}{Resumen y Conclusión}{81}{0}{13}
+\beamer@sectionintoc {14}{Ecualización de Histograma}{85}{0}{14}
+\beamer@sectionintoc {15}{Especificación de Histograma}{88}{0}{15}
+\beamer@sectionintoc {16}{Resumen y Conclusiones}{91}{0}{16}
+\beamer@sectionintoc {17}{Procesamiento Local de Histogramas}{96}{0}{17}
+\beamer@sectionintoc {18}{Resumen y Conclusiones}{99}{0}{18}

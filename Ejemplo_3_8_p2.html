@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a la Especificación de Histogramas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .equation {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .chart-container {
+            height: 240px;
+            width: 400px;
+        }
+        .code-box {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            font-family: "Courier New", monospace;
+        }
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold text-gray-800">Introducción a la Especificación de Histogramas</h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Ejemplo 3.7: Mecánica de la especificación</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-3"></div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="grid grid-cols-2 gap-8">
+                <!-- Left Column - Theory -->
+                <div>
+                    <div class="mb-5">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-info-circle text-blue-600 mr-2"></i>Definición del Problema</h3>
+                        <p class="text-gray-600">Transformación de una imagen 64×64 para que su histograma adopte una distribución específica.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-list-ol text-blue-600 mr-2"></i>Valores Iniciales</h3>
+                        <div class="code-box text-sm">
+                            s<sub>0</sub> = 1; s<sub>1</sub> = 3; s<sub>2</sub> = 5; s<sub>3</sub> = 6;<br>
+                            s<sub>4</sub> = 6; s<sub>5</sub> = 7; s<sub>6</sub> = 7; s<sub>7</sub> = 7
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-blue-600 mr-2"></i>Cálculo de G(z<sub>q</sub>)</h3>
+                        <div class="code-box text-sm">
+                            G(z<sub>0</sub>) = 0.00 → 0&nbsp;&nbsp;&nbsp;&nbsp;G(z<sub>4</sub>) = 2.45 → 2<br>
+                            G(z<sub>1</sub>) = 0.00 → 0&nbsp;&nbsp;&nbsp;&nbsp;G(z<sub>5</sub>) = 4.55 → 5<br>
+                            G(z<sub>2</sub>) = 0.00 → 0&nbsp;&nbsp;&nbsp;&nbsp;G(z<sub>6</sub>) = 5.95 → 6<br>
+                            G(z<sub>3</sub>) = 1.05 → 1&nbsp;&nbsp;&nbsp;&nbsp;G(z<sub>7</sub>) = 7.00 → 7
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-book text-blue-600 mr-2"></i>Ecuación Fundamental</h3>
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+                            <p class="equation text-center font-semibold text-lg">G(z<sub>q</sub>) = T(r<sub>k</sub>) = (L-1) ∑<sub>j=0</sub><sup>k</sup> p<sub>r</sub>(r<sub>j</sub>)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Visualizations -->
+                <div>
+                    <!-- Histogram Visualization -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-chart-bar text-blue-600 mr-2"></i>Histogramas</h3>
+                        <div class="flex space-x-4">
+                            <div class="chart-container">
+                                <canvas id="originalHistogram"></canvas>
+                                <p class="text-center text-sm text-gray-600 mt-1">Histograma Original</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="specifiedHistogram"></canvas>
+                                <p class="text-center text-sm text-gray-600 mt-1">Histograma Especificado</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transformation Function Visualization -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2"><i class="fas fa-exchange-alt text-blue-600 mr-2"></i>Función de Transformación</h3>
+                        <div class="chart-container mx-auto" style="width: 500px;">
+                            <canvas id="transformationFunction"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-gray-500 italic mt-2">Función G(z<sub>q</sub>): Mapeo no estrictamente monótono</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto mb-2 text-sm text-gray-600 italic">
+                <p>Nota: La transformación convierte cada pixel de la imagen original a un valor específico según la función G(z<sub>q</sub>).</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        // Original Histogram
+        new Chart(document.getElementById('originalHistogram'), {
+            type: 'bar',
+            data: {
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: [0, .25, 0, .15, .20, .30, .10, 0],
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 0.35,
+                        title: {
+                            display: true,
+                            text: 'pr(rk)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'rk'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Specified Histogram
+        new Chart(document.getElementById('specifiedHistogram'), {
+            type: 'bar',
+            data: {
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: [0, 0, 0, .15, .20, .30, .20, .15],
+                    backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 0.35,
+                        title: {
+                            display: true,
+                            text: 'pz(zq)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'zq'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Transformation Function
+        new Chart(document.getElementById('transformationFunction'), {
+            type: 'line',
+            data: {
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+                datasets: [{
+                    label: 'G(zq)',
+                    data: [0, 0, 0, 1, 2, 5, 6, 7],
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0,
+                    pointRadius: 4,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    stepped: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'G(z' + context.label + ') = ' + context.raw;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 7,
+                        title: {
+                            display: true,
+                            text: 'G(zq)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'zq'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Ejemplo_3_8_p3.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

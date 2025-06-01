@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta, positioning, calc, decorations.pathreplacing, calligraphy}
+
+\begin{document}
+
+% Define color
+\definecolor{filtkernel}{RGB}{51, 153, 204}
+
+\begin{tikzpicture}[scale=0.9]
+    % Set up coordinate system for the image
+    \draw[-{Latex[scale=1.2]}] (-1, 8) -- (8, 8) node[right] {$y$};
+    \draw[-{Latex[scale=1.2]}] (0, 9) -- (0, 0) node[below] {$x$};
+    
+    % Image grid
+    \draw[step=1cm] (0,0) grid (7,7);
+    
+    % Image labels
+    \node[anchor=east] at (-1, 8.5) {Image origin};
+    \draw[->, thin] (-1, 8.5) -- (0, 8);
+    
+    \node[anchor=west] at (4, 5.5) {Kernel origin};
+    \draw[->] (4, 5.5) -- (2.5, 5);
+    
+    \node[anchor=south] at (3, 3) {Filter kernel};
+    \draw (2, 4) circle (1cm);
+    
+    \node[anchor=north] at (3.5, 0) {Image pixels};
+    \draw[->] (3.5, 0.2) -- (3, 1);
+    
+    \node[anchor=west] at (0, -1) {Image $f$};
+    
+    % Draw blue filter kernel region
+    \fill[filtkernel, opacity=0.2] (1.5, 4.5) rectangle (3.5, 6.5);
+    \draw[filtkernel, thick] (1.5, 4.5) rectangle (3.5, 6.5);
+    
+    % Zoomed-in view
+    \draw[->, bend left=30] (4, 5) to (9, 9);
+    \node[align=center, anchor=west] at (4.5, 8) {Magnified view showing filter kernel\\coefficients and corresponding pixels\\in the image};
+    
+    % Draw zoomed-in kernel
+    \begin{scope}[shift={(11, 4)}]
+        % Draw 3x3 grid for kernel coefficients
+        \draw[filtkernel, thick] (0,0) grid (3,3);
+        
+        % Kernel labels
+        \node at (0.5, 2.5) {$w(-1, -1)$};
+        \node at (1.5, 2.5) {$w(-1, 0)$};
+        \node at (2.5, 2.5) {$w(-1, 1)$};
+        
+        \node at (0.5, 1.5) {$w(0, -1)$};
+        \node at (1.5, 1.5) {$w(0, 0)$};
+        \node at (2.5, 1.5) {$w(0, 1)$};
+        
+        \node at (0.5, 0.5) {$w(1, -1)$};
+        \node at (1.5, 0.5) {$w(1, 0)$};
+        \node at (2.5, 0.5) {$w(1, 1)$};
+        
+        \node[anchor=west] at (3.2, 1.5) {Filter kernel, $w(s,t)$};
+        \node[anchor=east] at (3, -0.5) {Kernel coefficients};
+        
+        % Connecting line from zoomed in back to small representation
+        \draw[->, thick] (11, 5) -- (11, 15);
+        \draw[thick] (1.5, -2) circle (5cm);
+        
+        % Image pixels under kernel
+        \begin{scope}[shift={(0,-7)}]
+            \draw[thin, blue!50] (0,0) grid (3,3);
+            
+            \node at (0.5, 2.5) {$f(x-1, y-1)$};
+            \node at (1.5, 2.5) {$f(x-1, y)$};
+            \node at (2.5, 2.5) {$f(x-1, y+1)$};
+            
+            \node at (0.5, 1.5) {$f(x, y-1)$};
+            \node at (1.5, 1.5) {$f(x, y)$};
+            \node at (2.5, 1.5) {$f(x, y+1)$};
+            
+            \node at (0.5, 0.5) {$f(x+1, y-1)$};
+            \node at (1.5, 0.5) {$f(x+1, y)$};
+            \node at (2.5, 0.5) {$f(x+1, y+1)$};
+            
+            \node[anchor=west] at (-2, -0.5) {Pixel values under kernel};
+            \node[anchor=west] at (-2, -1) {when it is centered on $(x, y)$};
+            
+            \draw[->, thin] (-1, -1) -- (1, 0.5);
+        \end{scope}
+    \end{scope}
+\end{tikzpicture}
+
+\end{document}

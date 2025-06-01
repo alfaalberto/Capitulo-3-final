@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correlación Espacial y Convolución</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .title {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #3498db;
+            font-weight: 500;
+        }
+        .equation-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .key-point {
+            background-color: #e8f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2980b9;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="slide flex flex-col items-center justify-center">
+        <h1 class="title text-4xl text-center mb-8">CORRELACIÓN ESPACIAL Y CONVOLUCIÓN</h1>
+        
+        <div class="key-point w-full">
+            <p class="text-lg mb-4">La <strong>correlación espacial</strong> y la <strong>convolución</strong> son operaciones fundamentales en el procesamiento digital de imágenes y señales que permiten realizar filtrado espacial y detectar características específicas.</p>
+        </div>
+
+        <div class="w-full my-6">
+            <h2 class="subtitle text-2xl mb-4">Definición Matemática</h2>
+            <div class="equation-box">
+                <p>La correlación de un kernel \(w\) de tamaño \(m \times n\) con una imagen \(f(x,y)\), denotada como \((w \star f)(x,y)\), está dada por:</p>
+                <p class="text-center my-4">\[(w \star f)(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t)f(x+s, y+t)\]</p>
+                <p>donde \(a=(m-1)/2\) y \(b=(n-1)/2\)</p>
+            </div>
+        </div>
+
+        <div class="w-full my-6">
+            <h2 class="subtitle text-2xl mb-4">Diferencia Principal</h2>
+            <p class="mb-2">La mecánica de la <strong>correlación espacial</strong> y la <strong>convolución</strong> son similares, excepto por una diferencia fundamental:</p>
+            <ul class="list-disc pl-8">
+                <li class="mb-2">En la <strong>convolución</strong>, el kernel se rota 180° antes de realizar la operación</li>
+                <li class="mb-2">Cuando el kernel es simétrico respecto a su centro, ambas operaciones producen el mismo resultado</li>
+            </ul>
+        </div>
+
+        <div class="w-full mt-6">
+            <p class="text-center text-lg italic">En esta presentación examinaremos ambos conceptos, sus propiedades matemáticas y sus aplicaciones prácticas a través de ejemplos visuales tanto en 1D como en 2D.</p>
+        </div>
+        
+        <div class="absolute bottom-4 right-4 text-sm text-gray-500">
+            <p>Página 1/10</p>
+        </div>
+    </div>
+
+    </script>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_pag_154_p2.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

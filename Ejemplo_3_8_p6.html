@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparación entre Ecualización y Especificación de Histogramas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .phobos-image {
+            width: 100%;
+            height: 300px;
+            background-color: #2d3748;
+            background-image: radial-gradient(circle at center, #4a5568 0%, #1a202c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .chart-container {
+            height: 220px;
+            width: 100%;
+        }
+        .equation {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .highlight-box {
+            position: relative;
+            border-left: 4px solid #3b82f6;
+            background-color: rgba(219, 234, 254, 0.5);
+        }
+        .highlight-box::before {
+            content: """;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 40px;
+            color: rgba(59, 130, 246, 0.3);
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-4">
+                <h1 class="text-4xl font-bold text-gray-800">Ejemplo 3.8: Comparación entre Métodos</h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Ecualización vs Especificación de Histogramas</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-2"></div>
+            </div>
+            
+            <!-- Main Content - Two columns -->
+            <div class="grid grid-cols-2 gap-6 mt-2">
+                <!-- Left column - Image and histogram -->
+                <div class="space-y-4">
+                    <div class="image-container">
+                        <div class="phobos-image">
+                            <div class="text-center">
+                                <i class="fas fa-moon text-5xl mb-2"></i>
+                                <p>Imagen de Phobos (Luna de Marte)</p>
+                                <p class="text-sm mt-2">NASA's Mars Global Surveyor</p>
+                                <p class="text-xs mt-1">Fig. 3.23(a)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">b</span>
+                            Histograma de la imagen
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="phobosHistogram"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Fig. 3.23(b): Distribución con gran concentración en valores bajos</p>
+                    </div>
+                </div>
+                
+                <!-- Right column - Analysis -->
+                <div class="space-y-4">
+                    <!-- Problem Description -->
+                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                        <h3 class="font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-microscope text-blue-600 mr-2"></i>
+                            Características de la imagen
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>Predominio de <span class="font-medium">áreas oscuras</span> (gran concentración de píxeles en niveles bajos)</li>
+                            <li>Histograma caracterizado por una distribución <span class="font-medium">muy desplazada hacia la izquierda</span></li>
+                            <li>Niveles de intensidad concentrados cerca del <span class="font-medium">valor 0</span></li>
+                            <li>Poca información visible en las zonas oscuras</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Expected vs Actual Results -->
+                    <div class="highlight-box p-4 rounded-r-lg">
+                        <h3 class="font-semibold text-gray-800 mb-1">Intuición Inicial vs Realidad</h3>
+                        <p class="text-gray-700">A primera vista, podría parecer que la <span class="font-medium text-blue-700">ecualización de histograma</span> sería una buena solución para mejorar esta imagen.</p>
+                        <p class="text-gray-700 mt-2">Sin embargo, como se demostrará en el análisis posterior, este enfoque <span class="font-medium text-red-700">no es adecuado</span> para esta imagen particular.</p>
+                    </div>
+                    
+                    <!-- Problem with Histogram Equalization -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                            Problema con la ecualización
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700">Característica crítica:</h4>
+                                <p class="text-gray-600">La función de transformación en la ecualización <span class="font-medium">sube rápidamente</span> desde el nivel 0 hasta cerca de 190</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700">Consecuencia:</h4>
+                                <p class="text-gray-600">Un intervalo muy estrecho de píxeles oscuros se mapea a un amplio rango de valores</p>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h4 class="text-sm font-medium text-gray-700">Resultado no deseado:</h4>
+                            <p class="bg-gray-100 rounded p-2 text-gray-800 text-sm">Imagen de apariencia "lavada" con pérdida de contraste en las áreas importantes</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Leading to next slides -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-lg">
+                        <h3 class="font-medium mb-1">Solución alternativa</h3>
+                        <p>Se requiere un enfoque más sofisticado: <span class="font-bold">especificación de histograma</span> con una función de transformación diseñada manualmente.</p>
+                        <p class="text-sm mt-1"><i class="fas fa-arrow-right"></i> Veremos los resultados en las siguientes diapositivas</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Equation -->
+            <div class="mt-4 bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <p class="text-center text-gray-800">La función de transformación en la ecualización de histograma viene dada por:</p>
+                <p class="equation text-center text-lg py-2">
+                    s<sub>k</sub> = T(r<sub>k</sub>) = (L-1) Σ<sub>j=0</sub><sup>k</sup> p<sub>r</sub>(r<sub>j</sub>) = (L-1) · P<sub>r</sub>(r<sub>k</sub>)
+                </p>
+                <p class="text-sm text-center text-gray-600">donde L es el número de niveles de gris y P<sub>r</sub>(r<sub>k</sub>) es la función de distribución acumulativa</p>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto mb-2 text-sm text-gray-600 flex justify-between items-center">
+                <p class="italic">Fig. 3.23-3.24: Análisis de imagen de Phobos y su procesamiento</p>
+                <p>Ejemplo 3.8: Comparación entre métodos de procesamiento de histogramas</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            // Phobos histogram (concentrated at low levels)
+            const histogramCtx = document.getElementById('phobosHistogram').getContext('2d');
+            new Chart(histogramCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'Número de píxeles (×10³)',
+                        data: [7.00, 0.20, 0.05, 0.02, 0.01, 0.00, 0.00, 0.00, 0.00],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de píxeles (×10³)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Intensidad'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+
+
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Ejemplo_3_8_p7.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+</body>
+</html>

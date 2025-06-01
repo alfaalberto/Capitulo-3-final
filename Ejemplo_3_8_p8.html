@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conclusiones: Especificación de Histogramas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .comparison-arrow {
+            position: relative;
+        }
+        .comparison-arrow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 12px solid #3b82f6;
+            transform: translateY(-50%);
+        }
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+        .bg-gradient-green {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        }
+        .highlight-text {
+            background: linear-gradient(transparent 60%, rgba(59, 130, 246, 0.2) 40%);
+            padding: 0 2px;
+        }
+        .chart-container {
+            height: 200px;
+            position: relative;
+        }
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .technique-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+        .image-placeholder {
+            background-color: #e5e7eb;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold text-gray-800">Conclusiones</h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Ventajas de la Especificación de Histogramas</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-2"></div>
+            </div>
+            
+            <!-- Main Content - Two columns -->
+            <div class="grid grid-cols-2 gap-8">
+                <!-- Left column - Key points and advantages -->
+                <div class="space-y-5">
+                    <!-- Key Comparison -->
+                    <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">
+                            <i class="fas fa-balance-scale text-blue-600 mr-2"></i>
+                            Comparativa de Técnicas
+                        </h3>
+                        
+                        <!-- Ecualización vs Especificación -->
+                        <div class="space-y-4">
+                            <div class="relative pl-6 pb-6 comparison-arrow">
+                                <div class="bg-blue-100 p-3 rounded-lg border-l-4 border-blue-600">
+                                    <h4 class="font-medium text-blue-800">Ecualización de Histograma</h4>
+                                    <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1 mt-2">
+                                        <li>Distribución <span class="font-medium">uniforme</span> de intensidades</li>
+                                        <li>Proceso <span class="font-medium">automático</span> sin control manual</li>
+                                        <li>Puede producir <span class="font-medium text-red-600">efectos no deseados</span> (lavado excesivo)</li>
+                                        <li>Función de transformación <span class="font-medium">única</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="bg-green-100 p-3 rounded-lg border-l-4 border-green-600">
+                                    <h4 class="font-medium text-green-800">Especificación de Histograma</h4>
+                                    <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1 mt-2">
+                                        <li>Distribución <span class="font-medium">controlada</span> según necesidades</li>
+                                        <li>Permite <span class="font-medium">diseño personalizado</span> del histograma</li>
+                                        <li><span class="font-medium text-green-600">Mayor control</span> sobre el resultado final</li>
+                                        <li>Permite <span class="font-medium">enfatizar rangos específicos</span> de intensidad</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Process Summary -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-5 rounded-lg">
+                        <h3 class="font-semibold text-xl mb-3">
+                            <i class="fas fa-cogs mr-2"></i>
+                            Proceso Completo
+                        </h3>
+                        <ol class="list-decimal pl-6 space-y-2">
+                            <li>Obtener valores <span class="font-medium">s<sub>k</sub></span> de la imagen original</li>
+                            <li>Calcular <span class="font-medium">G(z<sub>q</sub>)</span> usando ecuación 3-21:
+                                <div class="bg-white/20 p-2 rounded my-1 text-center">
+                                    G(z<sub>q</sub>) = T<sup>-1</sup>[G<sub>z</sub>(z<sub>q</sub>)]
+                                </div>
+                            </li>
+                            <li>Aplicar el redondeo para valores enteros en el rango [0,7]</li>
+                            <li>Crear mapeo <span class="font-medium">s<sub>k</sub> → z<sub>q</sub></span></li>
+                            <li>Transformar cada píxel según tabla de mapeo</li>
+                        </ol>
+                        <div class="mt-3 pt-2 border-t border-white/30 text-white/90 italic text-sm">
+                            La transformación especificada permite obtener resultados más precisos y controlados
+                        </div>
+                    </div>
+                    
+                    <!-- Applications -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white rounded-lg shadow p-4 feature-card border-t-4 border-blue-500">
+                            <div class="text-blue-600 text-2xl mb-2"><i class="fas fa-microscope"></i></div>
+                            <h4 class="font-medium text-gray-800">Imágenes Médicas</h4>
+                            <p class="text-sm text-gray-600 mt-1">Mejora específica de contraste en zonas de interés diagnóstico</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-4 feature-card border-t-4 border-purple-500">
+                            <div class="text-purple-600 text-2xl mb-2"><i class="fas fa-satellite"></i></div>
+                            <h4 class="font-medium text-gray-800">Imágenes Satelitales</h4>
+                            <p class="text-sm text-gray-600 mt-1">Resaltar características específicas en imágenes remotas</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-4 feature-card border-t-4 border-green-500">
+                            <div class="text-green-600 text-2xl mb-2"><i class="fas fa-fingerprint"></i></div>
+                            <h4 class="font-medium text-gray-800">Análisis Forense</h4>
+                            <p class="text-sm text-gray-600 mt-1">Recuperación de detalles en imágenes de baja calidad</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-4 feature-card border-t-4 border-yellow-500">
+                            <div class="text-yellow-600 text-2xl mb-2"><i class="fas fa-industry"></i></div>
+                            <h4 class="font-medium text-gray-800">Control de Calidad</h4>
+                            <p class="text-sm text-gray-600 mt-1">Detección automática de defectos en producción</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right column - Visual examples and charts -->
+                <div class="space-y-4">
+                    <!-- Visual Comparison -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-images text-blue-600 mr-2"></i>
+                            Resultados Visuales
+                        </h3>
+                        
+                        <div class="image-comparison">
+                            <!-- Original Image -->
+                            <div class="relative">
+                                <span class="technique-badge bg-gray-700 text-white">Original</span>
+                                <div class="image-placeholder">
+                                    <div class="text-center text-gray-600">
+                                        <i class="fas fa-image text-3xl mb-2"></i>
+                                        <p>Imagen de Phobos</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 text-center mt-1">Bajo contraste en zonas oscuras</p>
+                            </div>
+                            
+                            <!-- Equalized Image -->
+                            <div class="relative">
+                                <span class="technique-badge bg-blue-700 text-white">Ecualizada</span>
+                                <div class="image-placeholder">
+                                    <div class="text-center text-gray-600">
+                                        <i class="fas fa-image text-3xl mb-2"></i>
+                                        <p>Fig. 3.24(b)</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 text-center mt-1">Aspecto lavado y poco natural</p>
+                            </div>
+                            
+                            <!-- Specification Image 1 -->
+                            <div class="relative">
+                                <span class="technique-badge bg-green-700 text-white">Especificación</span>
+                                <div class="image-placeholder">
+                                    <div class="text-center text-gray-600">
+                                        <i class="fas fa-image text-3xl mb-2"></i>
+                                        <p>Fig. 3.25(c)</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 text-center mt-1">Balance mejorado de contraste</p>
+                            </div>
+                            
+                            <!-- Histogram Comparison -->
+                            <div class="relative">
+                                <span class="technique-badge bg-purple-700 text-white">Histogramas</span>
+                                <div class="image-placeholder">
+                                    <div class="chart-container h-full w-full">
+                                        <canvas id="histogramComparison"></canvas>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 text-center mt-1">Distribución controlada en especificación</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Advantages -->
+                    <div class="bg-white rounded-lg shadow-md p-5">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-star text-yellow-500 mr-2"></i>
+                            Ventajas Clave
+                        </h3>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <h4 class="font-medium text-blue-800">
+                                    <i class="fas fa-sliders-h mr-2"></i>
+                                    Control Preciso
+                                </h4>
+                                <p class="text-sm mt-1">Manipulación específica de rangos de intensidad según necesidades</p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <h4 class="font-medium text-green-800">
+                                    <i class="fas fa-eye mr-2"></i>
+                                    Preservación Visual
+                                </h4>
+                                <p class="text-sm mt-1">Evita efectos de lavado excesivo común en ecualización</p>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <h4 class="font-medium text-purple-800">
+                                    <i class="fas fa-chart-pie mr-2"></i>
+                                    Distribución Personalizada
+                                </h4>
+                                <p class="text-sm mt-1">Posibilidad de adaptar a distribuciones estadísticas conocidas</p>
+                            </div>
+                            
+                            <div class="bg-yellow-50 p-3 rounded-lg">
+                                <h4 class="font-medium text-yellow-800">
+                                    <i class="fas fa-magic mr-2"></i>
+                                    Flexibilidad
+                                </h4>
+                                <p class="text-sm mt-1">Aplicable como paso posterior a la ecualización tradicional</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transformation comparison -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-exchange-alt text-blue-600 mr-2"></i>
+                            Comparación de Transformaciones
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="transformationComparison"></canvas>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-2">
+                            <p>Función de ecualización: rápido aumento en valores oscuros</p>
+                            <p>Función especificada: más gradual y controlada</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto text-sm text-gray-600 italic bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                <p class="font-medium text-blue-800">Conclusión final:</p>
+                <p>La especificación de histogramas proporciona un método más flexible y potente para mejorar imágenes que la ecualización de histogramas tradicional, permitiendo adaptarse a requisitos específicos de cada aplicación y tipo de imagen.</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            // Histogram comparison chart
+            const histCompCtx = document.getElementById('histogramComparison').getContext('2d');
+            new Chart(histCompCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'Original',
+                        data: [0.30, 0.25, 0.20, 0.10, 0.05, 0.05, 0.03, 0.02, 0.00],
+                        backgroundColor: 'rgba(107, 114, 128, 0.7)',
+                        borderColor: 'rgb(107, 114, 128)',
+                        borderWidth: 1,
+                        barPercentage: 0.7
+                    }, {
+                        label: 'Ecualizado',
+                        data: [0.00, 0.05, 0.10, 0.15, 0.15, 0.15, 0.20, 0.10, 0.10],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1,
+                        barPercentage: 0.7
+                    }, {
+                        label: 'Especificado',
+                        data: [0.00, 0.05, 0.20, 0.25, 0.30, 0.15, 0.05, 0.00, 0.00],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        borderWidth: 1,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 10,
+                                font: {
+                                    size: 9
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Transformation comparison
+            const transCompCtx = document.getElementById('transformationComparison').getContext('2d');
+            new Chart(transCompCtx, {
+                type: 'line',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'Ecualización',
+                        data: [0, 64, 128, 180, 200, 220, 240, 250, 255],
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: true
+                    }, {
+                        label: 'Especificación',
+                        data: [0, 0, 0, 64, 128, 192, 224, 240, 255],
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 10,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 255,
+                            title: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoría Matemática de Kernels Separables</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .slide-container { width: 1280px; min-height: 720px; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+        }
+        
+        .matrix-highlight {
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            to { box-shadow: 0 0 30px rgba(147, 51, 234, 0.8); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 1.2s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 1.2s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .math-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .pulse-gentle {
+            animation: pulseGentle 3s infinite;
+        }
+        
+        @keyframes pulseGentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body class="gradient-bg flex items-center justify-center">
+    <div class="slide-container p-8 text-white relative overflow-hidden">
+        
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-8 left-8 text-9xl mono">⊗</div>
+            <div class="absolute bottom-8 right-8 text-9xl mono">∑</div>
+        </div>
+        
+        <!-- Header -->
+        <div class="text-center mb-8 fade-in-up">
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Teoría Matemática de Kernels Separables
+            </h1>
+            <div class="text-xl text-blue-200">Fundamentos y Ventajas Computacionales</div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-2 gap-12 h-full">
+            
+            <!-- Left Column: Definition and Example -->
+            <div class="space-y-8 slide-in-left">
+                
+                <!-- Definition Box -->
+                <div class="math-box rounded-2xl p-6 matrix-highlight">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-book-open text-2xl text-blue-400 mr-3"></i>
+                        <h2 class="text-2xl font-bold">Definición</h2>
+                    </div>
+                    <div class="text-lg leading-relaxed">
+                        Una función 2-D <span class="mono text-yellow-300">G(x,y)</span> es <strong class="text-blue-300">separable</strong> si puede expresarse como:
+                    </div>
+                    <div class="text-center my-6 text-2xl mono bg-gray-900 bg-opacity-50 rounded-lg p-4">
+
+                        $$G(x,y) = G_1(x) \times G_2(y)$$
+                    </div>
+                </div>
+                
+                <!-- Kernel Example -->
+                <div class="math-box rounded-2xl p-6 pulse-gentle">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-matrix text-2xl text-purple-400 mr-3"></i>
+                        <h2 class="text-2xl font-bold">Ejemplo: Kernel 2×3</h2>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="mb-4 text-xl">
+
+                            $$w = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}$$
+                        </div>
+                        
+                        <div class="flex items-center justify-center space-x-8 my-6">
+                            <div class="text-center">
+                                <div class="text-lg mb-2 text-green-300">Vector columna</div>
+                                <div class="text-xl">$$c = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$$</div>
+                            </div>
+                            
+                            <div class="text-4xl text-yellow-400">×</div>
+                            
+                            <div class="text-center">
+                                <div class="text-lg mb-2 text-blue-300">Vector fila</div>
+                                <div class="text-xl">$$r = \begin{bmatrix} 1 & 1 & 1 \end{bmatrix}$$</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center bg-gradient-to-r from-green-900 to-blue-900 bg-opacity-50 rounded-lg p-4">
+                            <div class="text-lg">$$cr^T = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \begin{bmatrix} 1 & 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix} = w$$</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: General Form and Advantages -->
+            <div class="space-y-8 slide-in-right">
+                
+                <!-- General Mathematical Form -->
+                <div class="math-box rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-function text-2xl text-green-400 mr-3"></i>
+                        <h2 class="text-2xl font-bold">Forma General</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="text-lg mb-2">Para kernel de tamaño m×n:</div>
+                            <div class="text-2xl bg-gray-900 bg-opacity-50 rounded-lg p-4">
+
+                                $$w = vw^T$$
+                            </div>
+                            <div class="text-sm mt-2 text-gray-300">Ecuación (3-41)</div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="text-lg mb-2">Para kernel cuadrado m×m:</div>
+                            <div class="text-2xl bg-gray-900 bg-opacity-50 rounded-lg p-4">
+
+                                $$w = vv^T$$
+                            </div>
+                            <div class="text-sm mt-2 text-gray-300">Ecuación (3-42)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Computational Advantage -->
+                <div class="math-box rounded-2xl p-6 matrix-highlight">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-rocket text-2xl text-red-400 mr-3"></i>
+                        <h2 class="text-2xl font-bold">Ventaja Computacional</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="text-xl bg-gradient-to-r from-red-900 to-orange-900 bg-opacity-50 rounded-lg p-4">
+
+                                $$C = \frac{MNmn}{MN(m+n)} = \frac{mn}{m+n}$$
+                            </div>
+                            <div class="text-sm mt-2 text-gray-300">Ecuación (3-44)</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div class="bg-red-900 bg-opacity-30 rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold text-red-300">Ejemplo: 11×11</div>
+                                <div class="text-2xl font-bold">5.2×</div>
+                                <div class="text-sm">más rápido</div>
+                            </div>
+                            <div class="bg-orange-900 bg-opacity-30 rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold text-orange-300">Kernels grandes</div>
+                                <div class="text-2xl font-bold">10+×</div>
+                                <div class="text-sm">reducción</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Benefits -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-900 bg-opacity-30 rounded-lg p-4 text-center">
+                        <i class="fas fa-memory text-2xl text-blue-400 mb-2"></i>
+                        <div class="font-bold">Menos Memoria</div>
+                        <div class="text-sm text-gray-300">m×1 + n×1 vs m×n</div>
+                    </div>
+                    <div class="bg-purple-900 bg-opacity-30 rounded-lg p-4 text-center">
+                        <i class="fas fa-clock text-2xl text-purple-400 mb-2"></i>
+                        <div class="font-bold">Menos Operaciones</div>
+                        <div class="text-sm text-gray-300">O(m+n) vs O(mn)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_pag_161_p3.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

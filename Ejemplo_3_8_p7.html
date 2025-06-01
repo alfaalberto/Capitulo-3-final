@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funciones de Transformación para Especificación de Histogramas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #3b82f6 25%, transparent 25%), 
+                            linear-gradient(-45deg, #3b82f6 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #3b82f6 75%),
+                            linear-gradient(-45deg, transparent 75%, #3b82f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+        }
+        .chart-container {
+            height: 240px;
+            width: 100%;
+            position: relative;
+        }
+        .equation {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .transformation-arrow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .image-placeholder {
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .highlight-text {
+            background: linear-gradient(transparent 60%, rgba(59, 130, 246, 0.2) 40%);
+            padding: 0 2px;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="slide bg-white rounded-lg overflow-hidden">
+        <div class="background-pattern"></div>
+        
+        <!-- Top decorative bar -->
+        <div class="h-3 bg-blue-600"></div>
+        
+        <div class="px-16 py-10 flex flex-col h-full relative z-10">
+            <!-- Title Section -->
+            <div class="mb-4">
+                <h1 class="text-4xl font-bold text-gray-800">Funciones de Transformación</h1>
+                <h2 class="text-2xl font-light text-blue-700 mt-1">Diseño manual para Especificación de Histograma</h2>
+                <div class="w-24 h-1 bg-blue-600 mt-2"></div>
+            </div>
+            
+            <!-- Main Content - Two columns -->
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Left column - Functions and specifications -->
+                <div class="space-y-4">
+                    <!-- Specified Histogram -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-1 flex items-center">
+                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">a</span>
+                            Histograma Especificado Manualmente
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="specifiedHistogram"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Fig. 3.25(a): Histograma objetivo diseñado para mejorar contraste</p>
+                    </div>
+                    
+                    <!-- Transformation Functions -->
+                    <div class="bg-white rounded-lg shadow-md p-4 relative">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-1 flex items-center">
+                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">b</span>
+                            Funciones de Transformación
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="transformationFunctions"></canvas>
+                        </div>
+                        <div class="absolute top-28 left-16 flex flex-col items-center">
+                            <span class="px-2 py-1 bg-blue-700 text-white rounded-full text-xs mb-1">1</span>
+                            <span class="text-sm text-blue-800">G(zq)</span>
+                        </div>
+                        <div class="absolute top-48 right-24 flex flex-col items-center">
+                            <span class="px-2 py-1 bg-green-700 text-white rounded-full text-xs mb-1">2</span>
+                            <span class="text-sm text-green-800">G⁻¹(sk)</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Fig. 3.25(b): Transformaciones directa (1) e inversa (2)</p>
+                    </div>
+                    
+                    <!-- Key Equations -->
+                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                        <h3 class="font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-calculator text-blue-600 mr-2"></i>
+                            Ecuaciones Fundamentales
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="bg-white rounded p-2 border-l-4 border-blue-500">
+                                <p class="text-sm text-gray-700 mb-1">Transformación para especificación de histograma:</p>
+                                <p class="equation text-center">G(z<sub>q</sub>) = T<sup>-1</sup>[G<sub>z</sub>(z<sub>q</sub>)]</p>
+                                <p class="text-xs text-gray-500 mt-1">Ecuación 3-21: Donde T<sup>-1</sup> es la función de ecualización inversa</p>
+                            </div>
+                            
+                            <div class="bg-white rounded p-2 border-l-4 border-green-500">
+                                <p class="text-sm text-gray-700 mb-1">Transformación inversa (necesaria para procesamiento):</p>
+                                <p class="equation text-center">G<sup>-1</sup>(s<sub>k</sub>) = z<sub>q</sub></p>
+                                <p class="text-xs text-gray-500 mt-1">Permite mapear los valores equalizados a los valores especificados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right column - Results and Analysis -->
+                <div class="space-y-4">
+                    <!-- Result Image -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-1 flex items-center">
+                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">c</span>
+                            Resultado de la Especificación de Histograma
+                        </h3>
+                        <div class="image-placeholder h-48 bg-gray-200">
+                            <div class="text-center text-gray-600">
+                                <i class="fas fa-image text-4xl mb-2"></i>
+                                <p>Imagen mejorada de Phobos</p>
+                                <p class="text-sm">Fig. 3.25(c)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Imagen con mejor contraste y detalles visibles en áreas oscuras</p>
+                    </div>
+                    
+                    <!-- Result Histogram -->
+                    <div class="bg-white rounded-lg shadow-md p-4">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-1 flex items-center">
+                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded mr-2">d</span>
+                            Histograma de la Imagen Resultante
+                        </h3>
+                        <div class="chart-container h-40">
+                            <canvas id="resultHistogram"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Fig. 3.25(d): El extremo inferior se ha desplazado hacia la derecha (sin exceso)</p>
+                    </div>
+                    
+                    <!-- Key Observations -->
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <h3 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                            Observaciones Clave
+                        </h3>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>Un <span class="highlight-text font-medium">cambio modesto</span> en el histograma original produjo una <span class="highlight-text font-medium">mejora significativa</span> en la imagen</li>
+                            <li>La función de transformación G(z<sub>q</sub>) presenta un comportamiento <span class="highlight-text">más gradual</span> que la función de ecualización</li>
+                            <li>El extremo inferior del histograma se desplazó <span class="highlight-text">hacia la derecha</span> pero sin exceso</li>
+                            <li>La especificación de histograma ofrece mayor <span class="highlight-text">control</span> sobre el resultado final</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Process Summary -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-lg">
+                        <h3 class="font-medium mb-1">Procedimiento Completo</h3>
+                        <ol class="list-decimal pl-5 space-y-1 text-sm">
+                            <li>Diseñar manualmente un histograma objetivo p<sub>z</sub>(z<sub>q</sub>)</li>
+                            <li>Calcular G(z<sub>q</sub>) usando la ecuación 3-21</li>
+                            <li>Obtener G<sup>-1</sup>(s<sub>k</sub>) por inversión</li>
+                            <li>Aplicar la transformación a los píxeles de la imagen ecualizada</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Note -->
+            <div class="mt-auto mb-2 text-sm text-gray-600 flex justify-between items-center">
+                <p class="italic">Fig. 3.25: Funciones de transformación para especificación de histograma</p>
+                <p>La transformación (2) aplicada sobre la imagen ecualizada produce el resultado deseado</p>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative bar -->
+        <div class="h-3 bg-blue-600 absolute bottom-0 w-full"></div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            // Specified Histogram
+            const specHistCtx = document.getElementById('specifiedHistogram').getContext('2d');
+            new Chart(specHistCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'Número de píxeles',
+                        data: [0.00, 0.15, 0.30, 0.20, 0.15, 0.10, 0.05, 0.05, 0.00],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Probabilidad'
+                            },
+                            ticks: {
+                                callback: function(value) { return value.toFixed(2); }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Intensidad'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Transformation Functions
+            const transformCtx = document.getElementById('transformationFunctions').getContext('2d');
+            new Chart(transformCtx, {
+                type: 'line',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'G(zq) - (1)',
+                        data: [0, 0, 0, 64, 128, 192, 224, 255, 255],
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: false,
+                        pointRadius: 4
+                    }, {
+                        label: 'G⁻¹(sk) - (2)',
+                        data: [0, 0, 0, 32, 64, 128, 192, 224, 255],
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        fill: false,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 255,
+                            title: {
+                                display: true,
+                                text: 'Valor de salida'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Valor de entrada'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Result Histogram
+            const resultHistCtx = document.getElementById('resultHistogram').getContext('2d');
+            new Chart(resultHistCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '32', '64', '96', '128', '160', '192', '224', '255'],
+                    datasets: [{
+                        label: 'Número de píxeles',
+                        data: [0.00, 0.05, 0.25, 0.20, 0.30, 0.15, 0.05, 0.00, 0.00],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Probabilidad'
+                            },
+                            ticks: {
+                                callback: function(value) { return value.toFixed(2); }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Intensidad'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Ejemplo_3_8_p8.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>
