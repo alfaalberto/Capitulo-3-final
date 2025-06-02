@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.30)  1 JUN 2025 17:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.30)  1 JUN 2025 17:52
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **./Presentacion_Capitulo_3.tex
 (Presentacion_Capitulo_3.tex
@@ -1209,7 +1209,10 @@ File: listings.cfg 2023/02/27 1.9 listings configuration
 ))
 Package: listings 2023/02/27 1.9 (Carsten Heinz)
 
-No file Presentacion_Capitulo_3.aux.
+(Presentacion_Capitulo_3.aux
+LaTeX Info: Redefining \. on input line 14.
+LaTeX Info: Redefining \% on input line 14.
+)
 \openout1 = `Presentacion_Capitulo_3.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
@@ -1230,6 +1233,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 58.
 LaTeX Font Info:    ... okay on input line 58.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 58.
 LaTeX Font Info:    ... okay on input line 58.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1286,6 +1290,8 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring OFF on input line 58.
+
+(Presentacion_Capitulo_3.out) (Presentacion_Capitulo_3.out)
 \@outlinefile=\write5
 \openout5 = `Presentacion_Capitulo_3.out'.
 
@@ -1475,7 +1481,7 @@ Overfull \hbox (28.0733pt too wide) in paragraph at lines 138--138
  [][][][]  
  []
 
-<figuras/Fig_3_1.png, id=254, 1027.84pt x 1027.84pt>
+<figuras/Fig_3_1.png, id=324, 1027.84pt x 1027.84pt>
 File: figuras/Fig_3_1.png Graphic file (type png)
 <use figuras/Fig_3_1.png>
 Package pdftex.def Info: figuras/Fig_3_1.png  used on input line 138.
@@ -1562,7 +1568,7 @@ Overfull \hbox (28.0733pt too wide) in paragraph at lines 187--187
  [][][][]  
  []
 
-<figuras/Fig_3_2.png, id=385, 928.97063pt x 461.47406pt>
+<figuras/Fig_3_2.png, id=455, 928.97063pt x 461.47406pt>
 File: figuras/Fig_3_2.png Graphic file (type png)
 <use figuras/Fig_3_2.png>
 Package pdftex.def Info: figuras/Fig_3_2.png  used on input line 187.
@@ -1738,7 +1744,7 @@ Overfull \hbox (61.3783pt too wide) in paragraph at lines 288--288
  [][][][]  
  []
 
-<figuras/Fig_3_3.png, id=730, 593.21625pt x 545.03625pt>
+<figuras/Fig_3_3.png, id=799, 593.21625pt x 545.03625pt>
 File: figuras/Fig_3_3.png Graphic file (type png)
 <use figuras/Fig_3_3.png>
 Package pdftex.def Info: figuras/Fig_3_3.png  used on input line 288.
@@ -1765,7 +1771,7 @@ Overfull \hbox (61.3783pt too wide) in paragraph at lines 297--297
  [][][][]  
  []
 
-<figuras/Fig_3_4.png, id=760, 898.10532pt x 526.21594pt>
+<figuras/Fig_3_4.png, id=829, 898.10532pt x 526.21594pt>
 File: figuras/Fig_3_4.png Graphic file (type png)
 <use figuras/Fig_3_4.png>
 Package pdftex.def Info: figuras/Fig_3_4.png  used on input line 297.
@@ -1863,7 +1869,7 @@ Overfull \hbox (42.03194pt too wide) in paragraph at lines 340--340
  [][][][]  
  []
 
-<figuras/Fig_3_5.png, id=911, 912.40875pt x 457.71pt>
+<figuras/Fig_3_5.png, id=980, 912.40875pt x 457.71pt>
 File: figuras/Fig_3_5.png Graphic file (type png)
 <use figuras/Fig_3_5.png>
 Package pdftex.def Info: figuras/Fig_3_5.png  used on input line 340.
@@ -1912,7 +1918,7 @@ Overfull \hbox (42.03194pt too wide) in paragraph at lines 375--375
  [][][][]  
  []
 
-<figuras/Fig_3_6.png, id=982, 614.295pt x 560.8453pt>
+<figuras/Fig_3_6.png, id=1051, 614.295pt x 560.8453pt>
 File: figuras/Fig_3_6.png Graphic file (type png)
 <use figuras/Fig_3_6.png>
 Package pdftex.def Info: figuras/Fig_3_6.png  used on input line 375.
@@ -1939,7 +1945,7 @@ Overfull \hbox (42.03194pt too wide) in paragraph at lines 394--394
  [][][][]  
  []
 
-<figuras/Fig_3_7.png, id=1012, 793.46437pt x 693.34032pt>
+<figuras/Fig_3_7.png, id=1081, 793.46437pt x 693.34032pt>
 File: figuras/Fig_3_7.png Graphic file (type png)
 <use figuras/Fig_3_7.png>
 Package pdftex.def Info: figuras/Fig_3_7.png  used on input line 394.
@@ -1970,7 +1976,7 @@ Overfull \hbox (42.03194pt too wide) in paragraph at lines 426--426
  [][][][]  
  []
 
-<figuras/Fig_3_8.png, id=1043, 508.90125pt x 666.23906pt>
+<figuras/Fig_3_8.png, id=1112, 508.90125pt x 666.23906pt>
 File: figuras/Fig_3_8.png Graphic file (type png)
 <use figuras/Fig_3_8.png>
 Package pdftex.def Info: figuras/Fig_3_8.png  used on input line 426.
@@ -2001,7 +2007,7 @@ Overfull \hbox (42.03194pt too wide) in paragraph at lines 444--444
  [][][][]  
  []
 
-<figuras/Fig_3_9.png, id=1073, 572.89032pt x 576.65437pt>
+<figuras/Fig_3_9.png, id=1142, 572.89032pt x 576.65437pt>
 File: figuras/Fig_3_9.png Graphic file (type png)
 <use figuras/Fig_3_9.png>
 Package pdftex.def Info: figuras/Fig_3_9.png  used on input line 444.
@@ -2098,7 +2104,7 @@ Overfull \hbox (36.40326pt too wide) in paragraph at lines 507--507
  [][][][]  
  []
 
-<figuras/Fig_3_13.png, id=1207, 706.89093pt x 286.06876pt>
+<figuras/Fig_3_13.png, id=1275, 706.89093pt x 286.06876pt>
 File: figuras/Fig_3_13.png Graphic file (type png)
 <use figuras/Fig_3_13.png>
 Package pdftex.def Info: figuras/Fig_3_13.png  used on input line 507.
@@ -2125,7 +2131,7 @@ Overfull \hbox (36.40326pt too wide) in paragraph at lines 520--520
  [][][][]  
  []
 
-<figuras/Fig_3_14.png, id=1249, 1007.26312pt x 513.41812pt>
+<figuras/Fig_3_14.png, id=1317, 1007.26312pt x 513.41812pt>
 File: figuras/Fig_3_14.png Graphic file (type png)
 <use figuras/Fig_3_14.png>
 Package pdftex.def Info: figuras/Fig_3_14.png  used on input line 520.
@@ -2196,7 +2202,7 @@ Overfull \hbox (36.40326pt too wide) in paragraph at lines 560--560
  [][][][]  
  []
 
-<figuras/Fig_3_15.png, id=1375, 964.35281pt x 137.7647pt>
+<figuras/Fig_3_15.png, id=1441, 964.35281pt x 137.7647pt>
 File: figuras/Fig_3_15.png Graphic file (type png)
 <use figuras/Fig_3_15.png>
 Package pdftex.def Info: figuras/Fig_3_15.png  used on input line 560.
@@ -2253,7 +2259,7 @@ Overfull \vbox (8.11076pt too high) detected at line 614
 ] [40
 
 ]
-<figuras/Fig_3_16.png, id=1626, 1027.58907pt x 546.54187pt>
+<figuras/Fig_3_16.png, id=1691, 1027.58907pt x 546.54187pt>
 File: figuras/Fig_3_16.png Graphic file (type png)
 <use figuras/Fig_3_16.png>
 Package pdftex.def Info: figuras/Fig_3_16.png  used on input line 731.
@@ -2272,7 +2278,7 @@ Package hyperref Warning: Option `pdfauthor' has already been used,
 ] [44
 
 ]
-<figuras/Fig_3_17.png, id=1792, 846.16125pt x 443.40656pt>
+<figuras/Fig_3_17.png, id=1857, 846.16125pt x 443.40656pt>
 File: figuras/Fig_3_17.png Graphic file (type png)
 <use figuras/Fig_3_17.png>
 Package pdftex.def Info: figuras/Fig_3_17.png  used on input line 783.
@@ -2286,7 +2292,7 @@ Package pdftex.def Info: figuras/Fig_3_17.png  used on input line 783.
 ] [48
 
 ]
-<figuras/Fig_3_18.png, id=2008, 938.75719pt x 318.43968pt>
+<figuras/Fig_3_18.png, id=2073, 938.75719pt x 318.43968pt>
 File: figuras/Fig_3_18.png Graphic file (type png)
 <use figuras/Fig_3_18.png>
 Package pdftex.def Info: figuras/Fig_3_18.png  used on input line 823.
@@ -2337,7 +2343,7 @@ Overfull \vbox (1.57082pt too high) detected at line 956
 ] [58
 
 ]
-<figuras/Fig_3_20.png, id=2400, 533.74406pt x 714.41907pt>
+<figuras/Fig_3_20.png, id=2463, 533.74406pt x 714.41907pt>
 File: figuras/Fig_3_20.png Graphic file (type png)
 <use figuras/Fig_3_20.png>
 Package pdftex.def Info: figuras/Fig_3_20.png  used on input line 996.
@@ -2366,69 +2372,32 @@ LaTeX Warning: Reference `eq:Tr_continuo' on page 63 undefined on input line 10
 
 [63
 
-]
-
-LaTeX Warning: Reference `eq:spec_Tr' on page 64 undefined on input line 1055.
-
-
-LaTeX Warning: Reference `eq:spec_Gz' on page 64 undefined on input line 1055.
-
-
-LaTeX Warning: Reference `eq:spec_Tr' on page 64 undefined on input line 1055.
-
-[64
+] [64
 
 ] [65
 
 ]
 
-LaTeX Warning: Reference `eq:spec_Tr' on page 66 undefined on input line 1104.
-
-
 LaTeX Warning: Reference `eq:Tr_discreta' on page 66 undefined on input line 11
 04.
-
-
-LaTeX Warning: Reference `eq:spec_Gz' on page 66 undefined on input line 1104.
 
 [66
 
 ]
 
-LaTeX Warning: Reference `eq:spec_Tr' on page 67 undefined on input line 1104.
-
-
 LaTeX Warning: Reference `eq:Tr_discreta' on page 67 undefined on input line 11
 04.
-
-
-LaTeX Warning: Reference `eq:spec_Gz' on page 67 undefined on input line 1104.
 
 [67
 
 ]
 
-LaTeX Warning: Reference `eq:spec_Tr' on page 68 undefined on input line 1104.
-
-
 LaTeX Warning: Reference `eq:Tr_discreta' on page 68 undefined on input line 11
 04.
 
-
-LaTeX Warning: Reference `eq:spec_Gz' on page 68 undefined on input line 1104.
-
 [68
 
-]
-
-LaTeX Warning: Reference `eq:spec_sk_discreta' on page 69 undefined on input li
-ne 1117.
-
-
-LaTeX Warning: Reference `eq:spec_Gzq_discreta' on page 69 undefined on input l
-ine 1117.
-
-[69
+] [69
 
 ] [70
 
@@ -2477,7 +2446,7 @@ Package hyperref Warning: Option `pdfauthor' has already been used,
 ] [85
 
 ]
-<figuras/Fig_3_23.png, id=3519, 775.39688pt x 429.85594pt>
+<figuras/Fig_3_23.png, id=3577, 775.39688pt x 429.85594pt>
 File: figuras/Fig_3_23.png Graphic file (type png)
 <use figuras/Fig_3_23.png>
 Package pdftex.def Info: figuras/Fig_3_23.png  used on input line 1488.
@@ -2485,7 +2454,7 @@ Package pdftex.def Info: figuras/Fig_3_23.png  used on input line 1488.
  [86
 
  <./figuras/Fig_3_23.png>]
-<figuras/Fig_3_24.png, id=3548, 667.74469pt x 607.51968pt>
+<figuras/Fig_3_24.png, id=3606, 667.74469pt x 607.51968pt>
 File: figuras/Fig_3_24.png Graphic file (type png)
 <use figuras/Fig_3_24.png>
 Package pdftex.def Info: figuras/Fig_3_24.png  used on input line 1499.
@@ -2499,7 +2468,7 @@ Overfull \vbox (0.82887pt too high) detected at line 1499
  <./figuras/Fig_3_24.png>] [88
 
 ]
-<figuras/Fig_3_25.png, id=3641, 420.06938pt x 577.40718pt>
+<figuras/Fig_3_25.png, id=3698, 420.06938pt x 577.40718pt>
 File: figuras/Fig_3_25.png Graphic file (type png)
 <use figuras/Fig_3_25.png>
 Package pdftex.def Info: figuras/Fig_3_25.png  used on input line 1536.
@@ -2539,7 +2508,7 @@ Overfull \vbox (8.37822pt too high) detected at line 1629
 [97
 
 ]
-<figuras/Fig_3_26.png, id=4065, 953.06062pt x 316.18124pt>
+<figuras/Fig_3_26.png, id=4120, 953.06062pt x 316.18124pt>
 File: figuras/Fig_3_26.png Graphic file (type png)
 <use figuras/Fig_3_26.png>
 Package pdftex.def Info: figuras/Fig_3_26.png  used on input line 1643.
@@ -2629,7 +2598,7 @@ Package pdftex.def Info: figuras/Fig_3_26.png  used on input line 1643.
 \openout8 = `Presentacion_Capitulo_3.snm'.
 
 
-[114] (Presentacion_Capitulo_3.aux
+(Presentacion_Capitulo_3.aux
 LaTeX Info: Redefining \. on input line 14.
 LaTeX Info: Redefining \% on input line 14.
 )
@@ -2641,27 +2610,15 @@ L3 programming layer <2024-01-04>
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-LaTeX Warning: Temporary extra page added at the end. Rerun to get it removed.
-
-
-Package rerunfilecheck Warning: File `Presentacion_Capitulo_3.out' has changed.
-
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Presentacion_Capitulo_3.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  1042057A574C8A4DF57DE2626CCAFF0B;3975.
+Package rerunfilecheck Info: File `Presentacion_Capitulo_3.out' has not changed
+.
+(rerunfilecheck)             Checksum: 1042057A574C8A4DF57DE2626CCAFF0B;3975.
  ) 
 Here is how much of TeX's memory you used:
- 47177 strings out of 474486
- 1118113 string characters out of 5753570
+ 47204 strings out of 474486
+ 1118816 string characters out of 5753570
  1978542 words of memory out of 5000000
- 68383 multiletter control sequences out of 15000+600000
+ 68404 multiletter control sequences out of 15000+600000
  583783 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,16n,123p,746b,2478s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2708,9 +2665,9 @@ pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Progr
 am Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type
 1/public/amsfonts/cm/cmsy9.pfb>
-Output written on Presentacion_Capitulo_3.pdf (114 pages, 6687418 bytes).
+Output written on Presentacion_Capitulo_3.pdf (113 pages, 6693494 bytes).
 PDF statistics:
- 5493 PDF objects out of 6186 (max. 8388607)
+ 5542 PDF objects out of 6186 (max. 8388607)
  259 named destinations out of 1000 (max. 500000)
- 4229 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 4373 words of extra memory for PDF output out of 10000 (max. 10000000)
 
