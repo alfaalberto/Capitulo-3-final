@@ -1,9 +1,117 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filtros Espaciales en Procesamiento de Imágenes</title>
+  <!-- Tailwind CSS y FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    html, body { height: 100%; margin: 0; padding: 0; overflow: auto !important; }
-    body { width: 100vw; height: 100vh; overflow: auto !important; }
+    html, body {
+      height: 100%; margin: 0; padding: 0; overflow: auto !important;
+      background: linear-gradient(135deg, #e6f7ff 0%, #ffffff 100%);
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      min-width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide {
+      width: 100%;
+      max-width: 900px;
+      min-height: 70vh;
+      margin: 40px 0 0 0;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44, 106, 171, 0.12);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1.5px solid #e0e8f5;
+    }
+    .accent-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #0a4d8c, #2d8cd5);
+    }
+    .title {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #0a4d8c;
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .subtitle {
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: #2d6da3;
+    }
+    .icon-container {
+      font-size: 1.8rem;
+      color: #2d8cd5;
+      background: #f2f8fb;
+      border-radius: 12px;
+      margin: 1.5rem auto 0 auto;
+      padding: 1.1rem 2.5rem;
+      box-shadow: 0 2px 12px rgba(44, 106, 171, 0.06);
+      display: flex;
+      gap: 1.5rem;
+      border: 1px solid #e0e8f5;
+      max-width: 420px;
+      justify-content: center;
+    }
+    .footer-bar {
+      background: #0a4d8c;
+      color: #fff;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .next-button {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      z-index: 20;
+      background: linear-gradient(90deg, #2d8cd5, #0a4d8c);
+      color: #fff;
+      font-weight: 500;
+      font-size: 1.15rem;
+      border: none;
+      padding: 0.85rem 2.2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(44, 106, 171, 0.09);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s, transform 0.18s;
+    }
+    .next-button:hover, .next-button:focus {
+      background: linear-gradient(90deg, #0a4d8c, #2d8cd5);
+      transform: translateY(-2px) scale(1.03);
+      outline: 2px solid #2d8cd5;
+    }
+    @media (max-width: 600px) {
+      .slide { max-width: 98vw; min-height: 80vh; }
+      .title { font-size: 1.4rem; }
+      .subtitle { font-size: 1rem; }
+      .icon-container { font-size: 1.1rem; padding: 0.7rem 1.2rem; }
+      .footer-bar { font-size: 0.9rem; padding: 0.7rem 1rem; }
+      .next-button { font-size: 1rem; padding: 0.7rem 1.2rem; right: 12px; bottom: 18px; }
+    }
   </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,57 +173,44 @@
     position: absolute;
     bottom: 50px; /* Ajustado */
     right: 50px;
-    z-index: 20;
-}
-
-    </style>
 </head>
 <body>
-    <div class="slide flex flex-col">
-        <div class="accent-bar w-full"></div>
-        <div class="grid-pattern"></div>
-        
-        <div class="flex flex-col justify-center items-center h-full px-20 z-10">
-            <div class="mb-4 text-center">
-                <h1 class="title mb-4">Filtros Espaciales en Procesamiento de Imágenes</h1>
-                <p class="subtitle">Fundamentos, tipos y mecánica del filtrado espacial</p>
-            </div>
-            
-            <div class="mt-16 flex items-center justify-center">
-                <div class="icon-container flex items-center border-t-2 border-b-2 border-blue-300 py-5 px-12 mt-6">
-                    <i class="fas fa-image"></i>
-                    <i class="fas fa-filter"></i>
-                    <i class="fas fa-chart-line"></i>
-                    <i class="fas fa-microchip"></i>
-                    <i class="fas fa-cogs"></i>
-                </div>
-            </div>
-        </div>
-        
-        <div class="bg-blue-800 text-white p-4 mt-auto">
-            <div class="flex justify-between items-center">
-                <div>Procesamiento Digital de Imágenes</div>
-                <div>2024</div>
-            </div>
-        </div>
+  <div class="slide">
+    <div class="accent-bar w-full"></div>
+    <div class="flex flex-col justify-center items-center h-full px-6 py-10 z-10">
+      <div class="mb-4 text-center">
+        <h1 class="title">Filtros Espaciales en Procesamiento de Imágenes</h1>
+        <p class="subtitle">Fundamentos, tipos y mecánica del filtrado espacial</p>
+      </div>
+      <div class="icon-container" aria-label="Íconos representativos de procesamiento de imágenes">
+        <i class="fas fa-image" title="Imagen"></i>
+        <i class="fas fa-filter" title="Filtro"></i>
+        <i class="fas fa-chart-line" title="Gráfica"></i>
+        <i class="fas fa-microchip" title="Microchip"></i>
+        <i class="fas fa-cogs" title="Engranajes"></i>
+      </div>
     </div>
-    </script>
-
-<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
-    Siguiente <i class="fas fa-arrow-right ml-2"></i>
-</button>
-
- <script>
-        // Nombre del siguiente archivo HTML
-        const siguientePaginaHTML = 'Tema_3_4_p2.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
-
-        // Opción 1: Función para el botón
-        function irAPaginaSiguiente() {
-            window.location.href = siguientePaginaHTML;
-        }
-
-   </script>
-
-
+    <div class="footer-bar">
+      <span>Procesamiento Digital de Imágenes</span>
+      <span>2024</span>
+    </div>
+    <button onclick="irAPaginaSiguiente()" class="next-button" tabindex="0" aria-label="Ir a la siguiente diapositiva">
+      Siguiente <i class="fas fa-arrow-right ml-2"></i>
+    </button>
+  </div>
+  <script>
+    // Nombre del siguiente archivo HTML
+    const siguientePaginaHTML = 'Tema_3_4_p2.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+    // Función para el botón
+    function irAPaginaSiguiente() {
+      window.location.href = siguientePaginaHTML;
+    }
+    // Soporte accesible: Enter o Espacio activa el botón
+    document.querySelector('.next-button').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        irAPaginaSiguiente();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -142,6 +142,43 @@
     </style>
 </head>
 <body>
+  <div class="slide">
+    <div class="accent-bar w-full"></div>
+    <div class="flex flex-col justify-center items-center h-full px-6 py-10 z-10">
+      <div class="mb-4 text-center">
+        <h1 class="title">Aplicaciones de Filtros Espaciales</h1>
+        <p class="subtitle">Ejemplos de uso en procesamiento digital de imágenes</p>
+      </div>
+      <div class="icon-container" aria-label="Íconos de aplicaciones de filtros">
+        <i class="fas fa-search" title="Detección de bordes"></i>
+        <i class="fas fa-eye-dropper" title="Suavizado"></i>
+        <i class="fas fa-adjust" title="Contraste"></i>
+        <i class="fas fa-layer-group" title="Combinación de filtros"></i>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Procesamiento Digital de Imágenes</span>
+      <span>2024</span>
+    </div>
+    <button onclick="irAPaginaSiguiente()" class="next-button" tabindex="0" aria-label="Ir a la siguiente diapositiva">
+      Siguiente <i class="fas fa-arrow-right ml-2"></i>
+    </button>
+  </div>
+  <script>
+    // Nombre del siguiente archivo HTML
+    const siguientePaginaHTML = 'Tema_3_4_p4.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+    // Función para el botón
+    function irAPaginaSiguiente() {
+      window.location.href = siguientePaginaHTML;
+    }
+    // Soporte accesible: Enter o Espacio activa el botón
+    document.querySelector('.next-button').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        irAPaginaSiguiente();
+      }
+    });
+  </script>
+</body>
     <div class="slide">
         <div class="slide-header">
             <h1>Mecánica del Filtrado Espacial Lineal</h1>
