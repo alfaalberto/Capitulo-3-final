@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -43,70 +44,6 @@
     }
     .title {
       font-size: 2.3rem;
-            color: #2d6da3;
-        }
-        .accent-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #0a4d8c, #2d8cd5);
-        }
-        .grid-pattern {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30%;
-            height: 100%;
-            opacity: 0.06;
-            background-image: 
-                linear-gradient(#0a4d8c 1px, transparent 1px),
-                linear-gradient(90deg, #0a4d8c 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .icon-container {
-            font-size: 1.5rem;
-            color: #2d8cd5;
-        }
-        .icon-container i {
-            margin: 0 12px;
-        }
-
-.next-button {
-    position: absolute;
-    bottom: 50px; /* Ajustado */
-    right: 50px;
-</head>
-<body>
-  <!-- Fondo animado tipo presentación moderna -->
-  <div class="background-animated"></div>
-  <div class="slide glass-card">
-    <div class="accent-bar w-full"></div>
-    <div class="flex flex-col justify-center items-center h-full px-6 py-10 z-10">
-      <div class="mb-8 text-center">
-        <h1 class="title big-title">Filtros Espaciales en Procesamiento de Imágenes</h1>
-        <p class="subtitle">Fundamentos, tipos y mecánica del filtrado espacial</p>
-      </div>
-      <div class="flex gap-8 mt-8 mb-4">
-        <div class="icon-bubble animate-pop" title="Imagen"><i class="fas fa-image"></i></div>
-        <div class="icon-bubble animate-pop-delay1" title="Filtro"><i class="fas fa-filter"></i></div>
-        <div class="icon-bubble animate-pop-delay2" title="Gráfica"><i class="fas fa-chart-line"></i></div>
-        <div class="icon-bubble animate-pop-delay3" title="Microchip"><i class="fas fa-microchip"></i></div>
-        <div class="icon-bubble animate-pop-delay4" title="Engranajes"><i class="fas fa-cogs"></i></div>
-      </div>
-    </div>
-    <div class="footer-bar glass-footer">
-      <span>Procesamiento Digital de Imágenes</span>
-      <span>2024</span>
-    </div>
-    <button onclick="irAPaginaSiguiente()" class="next-button fancy-btn" tabindex="0" aria-label="Ir a la siguiente diapositiva">
-      Siguiente <i class="fas fa-arrow-right ml-2"></i>
-    </button>
-  </div>
-  <style>
-    /* Fondo animado */
-    .background-animated {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 0;
-      background: linear-gradient(120deg, #e0e7ff 0%, #b6e0fe 100%);
       overflow: hidden;
       animation: gradientBG 10s ease-in-out infinite alternate;
     }
