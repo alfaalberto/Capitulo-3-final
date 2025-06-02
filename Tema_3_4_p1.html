@@ -175,29 +175,124 @@
     right: 50px;
 </head>
 <body>
-  <div class="slide">
+  <!-- Fondo animado tipo presentación moderna -->
+  <div class="background-animated"></div>
+  <div class="slide glass-card">
     <div class="accent-bar w-full"></div>
     <div class="flex flex-col justify-center items-center h-full px-6 py-10 z-10">
-      <div class="mb-4 text-center">
-        <h1 class="title">Filtros Espaciales en Procesamiento de Imágenes</h1>
+      <div class="mb-8 text-center">
+        <h1 class="title big-title">Filtros Espaciales en Procesamiento de Imágenes</h1>
         <p class="subtitle">Fundamentos, tipos y mecánica del filtrado espacial</p>
       </div>
-      <div class="icon-container" aria-label="Íconos representativos de procesamiento de imágenes">
-        <i class="fas fa-image" title="Imagen"></i>
-        <i class="fas fa-filter" title="Filtro"></i>
-        <i class="fas fa-chart-line" title="Gráfica"></i>
-        <i class="fas fa-microchip" title="Microchip"></i>
-        <i class="fas fa-cogs" title="Engranajes"></i>
+      <div class="flex gap-8 mt-8 mb-4">
+        <div class="icon-bubble animate-pop" title="Imagen"><i class="fas fa-image"></i></div>
+        <div class="icon-bubble animate-pop-delay1" title="Filtro"><i class="fas fa-filter"></i></div>
+        <div class="icon-bubble animate-pop-delay2" title="Gráfica"><i class="fas fa-chart-line"></i></div>
+        <div class="icon-bubble animate-pop-delay3" title="Microchip"><i class="fas fa-microchip"></i></div>
+        <div class="icon-bubble animate-pop-delay4" title="Engranajes"><i class="fas fa-cogs"></i></div>
       </div>
     </div>
-    <div class="footer-bar">
+    <div class="footer-bar glass-footer">
       <span>Procesamiento Digital de Imágenes</span>
       <span>2024</span>
     </div>
-    <button onclick="irAPaginaSiguiente()" class="next-button" tabindex="0" aria-label="Ir a la siguiente diapositiva">
+    <button onclick="irAPaginaSiguiente()" class="next-button fancy-btn" tabindex="0" aria-label="Ir a la siguiente diapositiva">
       Siguiente <i class="fas fa-arrow-right ml-2"></i>
     </button>
   </div>
+  <style>
+    /* Fondo animado */
+    .background-animated {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      background: linear-gradient(120deg, #e0e7ff 0%, #b6e0fe 100%);
+      overflow: hidden;
+      animation: gradientBG 10s ease-in-out infinite alternate;
+    }
+    @keyframes gradientBG {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      100% { filter: hue-rotate(25deg) brightness(1.1); }
+    }
+    /* Glassmorphism card */
+    .glass-card {
+      background: rgba(255,255,255,0.75);
+      box-shadow: 0 8px 32px rgba(44,106,171,0.18), 0 1.5px 8px 0 rgba(44,106,171,0.08);
+      backdrop-filter: blur(8px) saturate(1.2);
+      border: 1.5px solid rgba(180,210,255,0.23);
+    }
+    .glass-footer {
+      background: rgba(10,77,140,0.92);
+      backdrop-filter: blur(2px);
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+    /* Títulos grandes y modernos */
+    .big-title {
+      font-size: 2.8rem;
+      letter-spacing: 0.03em;
+      font-weight: 800;
+      color: #0a4d8c;
+      text-shadow: 0 2px 12px #b6e0fe44;
+    }
+    @media (max-width: 600px) {
+      .big-title { font-size: 1.5rem; }
+    }
+    /* Íconos circulares animados */
+    .icon-bubble {
+      background: linear-gradient(135deg, #e0e7ff 60%, #b6e0fe 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 14px #b6e0fe44;
+      width: 64px; height: 64px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.1rem;
+      color: #2d8cd5;
+      border: 2.5px solid #2d8cd5;
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+      animation: popIn 0.6s cubic-bezier(.42,0,.58,1) backwards;
+    }
+    .icon-bubble:hover { transform: scale(1.13) rotate(-6deg); box-shadow: 0 5px 24px #2d8cd577; }
+    .animate-pop { animation-delay: 0.1s; }
+    .animate-pop-delay1 { animation-delay: 0.25s; }
+    .animate-pop-delay2 { animation-delay: 0.4s; }
+    .animate-pop-delay3 { animation-delay: 0.55s; }
+    .animate-pop-delay4 { animation-delay: 0.7s; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+    /* Botón siguiente flotante mejorado */
+    .fancy-btn {
+      background: linear-gradient(90deg, #2d8cd5, #0a4d8c 90%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.25rem;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px #2d8cd555, 0 1.5px 8px 0 #0a4d8c22;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.22s, transform 0.18s, box-shadow 0.18s;
+      position: absolute;
+      bottom: 36px;
+      right: 44px;
+      z-index: 10;
+      outline: none;
+    }
+    .fancy-btn:hover, .fancy-btn:focus {
+      background: linear-gradient(90deg, #0a4d8c 80%, #2d8cd5 100%);
+      transform: translateY(-3px) scale(1.06);
+      box-shadow: 0 12px 32px #2d8cd577;
+      outline: 2.5px solid #2d8cd5;
+    }
+    @media (max-width: 600px) {
+      .fancy-btn { font-size: 1rem; padding: 0.7rem 1.2rem; right: 12px; bottom: 18px; }
+    }
+    /* Ajuste de slide y footer para fondo animado */
+    .slide { z-index: 2; }
+    .footer-bar { z-index: 3; }
+  </style>
   <script>
     // Nombre del siguiente archivo HTML
     const siguientePaginaHTML = 'Tema_3_4_p2.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
