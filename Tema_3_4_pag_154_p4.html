@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correlación Espacial y Convolución - Página 4</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .title {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #3498db;
+            font-weight: 500;
+        }
+        .equation-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .key-point {
+            background-color: #e8f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2980b9;
+        }
+        .function-display {
+            font-family: monospace;
+            background: #f0f2f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        .grid-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 30px);
+            gap: 5px;
+            font-family: monospace;
+            justify-content: center;
+        }
+        .grid-cell {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+        }
+        .grid-cell-highlight {
+            background-color: #e8f4f8;
+            border: 1px solid #3498db;
+        }
+        .grid-label {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .step-container {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        .code-blue {
+            color: #3498db;
+            font-weight: bold;
+        }
+        .code-red {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .arrow-step {
+            margin: 0 10px;
+            color: #7f8c8d;
+        }
+        .process-step {
+            background-color: #f8f9fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .comparison-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .comparison-column {
+            width: 48%;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .rotate-icon {
+            color: #e74c3c;
+            margin: 0 5px;
+            font-size: 1.2em;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="slide flex flex-col">
+        <h1 class="title text-3xl">Convolución en Una Dimensión (1-D)</h1>
+        
+        <div class="my-4">
+            <h2 class="subtitle text-2xl mb-2">Formulación Matemática</h2>
+            <div class="equation-box">
+                <p>La convolución de un kernel \(w\) con una función \(f\) en 1-D, denotada como \((w * f)(x)\), está dada por:</p>
+                <p class="text-center my-3">\[(w * f)(x) = \sum_{s=-a}^{a} w(s)f(x-s) \]</p>
+                <p>Observe la diferencia crucial con la correlación: en convolución usamos \(f(x-s)\) en lugar de \(f(x+s)\).</p>
+            </div>
+        </div>
+
+        <div class="key-point">
+            <p class="font-semibold">Diferencia clave entre Correlación y Convolución:</p>
+            <p>La convolución es equivalente a realizar una correlación pero con el kernel rotado 180°. Cuando el kernel es simétrico respecto a su centro, ambas operaciones producen el mismo resultado.</p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6 my-4">
+            <div>
+                <h2 class="subtitle text-xl mb-2">Proceso de Convolución</h2>
+                
+                <div class="process-step">
+                    <p class="font-semibold">Paso 1: Rotación del Kernel</p>
+                    <p>Antes de iniciar la convolución, rotamos el kernel 180°:</p>
+                    <div class="step-container">
+                        <span>Kernel original:</span>
+                        <div class="grid-display ml-2">
+                            <div class="grid-cell code-blue">1</div>
+                            <div class="grid-cell code-blue">2</div>
+                            <div class="grid-cell code-blue">4</div>
+                            <div class="grid-cell code-blue">2</div>
+                            <div class="grid-cell code-blue">8</div>
+                        </div>
+                    </div>
+                    <div class="step-container">
+                        <span>Kernel rotado:</span>
+                        <div class="grid-display ml-2">
+                            <div class="grid-cell code-red">8</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">4</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">1</div>
+                        </div>
+                        <span class="ml-2 rotate-icon"><i class="fas fa-sync-alt"></i> 180°</span>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <p class="font-semibold">Paso 2: Cálculo de Valores</p>
+                    <p>Usamos el mismo proceso de desplazamiento que en correlación, pero con el kernel rotado:</p>
+                    <ul class="list-disc pl-8">
+                        <li>\(g(0) = 0\) (Posición inicial)</li>
+                        <li>\(g(1) = 1\) (Primer desplazamiento)</li>
+                        <li>\(g(2) = 2\) (Segundo desplazamiento)</li>
+                        <li>\(g(3) = 4\) (Tercer desplazamiento)</li>
+                        <li>\(g(4) = 2\) (Cuarto desplazamiento)</li>
+                        <li>\(g(5) = 8\) (Quinto desplazamiento)</li>
+                    </ul>
+                </div>
+                
+                <div class="key-point mt-4">
+                    <p class="font-semibold">Fórmula general:</p>
+                    <p class="text-center my-2">\[(w * f)(x,y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s,t)f(x-s, y-t)\]</p>
+                    <p>Los signos negativos alinean las coordenadas de \(f\) y \(w\) cuando una de las funciones es rotada 180°.</p>
+                </div>
+            </div>
+            
+            <div>
+                <h2 class="subtitle text-xl mb-2">Visualización del Proceso</h2>
+                
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <p class="text-center font-semibold mb-2">Posiciones durante la convolución</p>
+                    
+                    <div class="step-container">
+                        <span class="grid-label">Origen \(f\):</span>
+                        <div class="grid-display">
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell grid-cell-highlight">1</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <span class="grid-label">Kernel rotado:</span>
+                        <div class="grid-display">
+                            <div class="grid-cell code-red">8</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">4</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <span class="grid-label">Posición inicial:</span>
+                        <div class="grid-display">
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell grid-cell-highlight">1</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                        </div>
+                        <div class="arrow-step">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="grid-display">
+                            <div class="grid-cell code-red">8</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">4</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">1</div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center font-semibold mt-4 mb-2">Resultado de la Convolución</p>
+                    <div class="step-container">
+                        <span class="grid-label">Resultado:</span>
+                        <div class="grid-display">
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell code-red">1</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">4</div>
+                            <div class="grid-cell code-red">2</div>
+                            <div class="grid-cell code-red">8</div>
+                            <div class="grid-cell">0</div>
+                            <div class="grid-cell">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-center font-semibold mb-2">Resultado Extendido (completo)</p>
+                        <div class="step-container">
+                            <span class="grid-label">Resultado extendido:</span>
+                            <div class="grid-display">
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell code-red">1</div>
+                                <div class="grid-cell code-red">2</div>
+                                <div class="grid-cell code-red">4</div>
+                                <div class="grid-cell code-red">2</div>
+                                <div class="grid-cell code-red">8</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-container">
+            <div class="comparison-column">
+                <h3 class="text-center font-semibold text-blue-600 mb-2">Correlación</h3>
+                <p class="text-center">\[(w \star f)(x) = \sum_{s=-a}^{a} w(s)f(x+s)\]</p>
+                <div class="grid-display mx-auto mt-3">
+                    <div class="grid-cell">0</div>
+                    <div class="grid-cell code-blue">8</div>
+                    <div class="grid-cell code-blue">2</div>
+                    <div class="grid-cell code-blue">4</div>
+                    <div class="grid-cell code-blue">2</div>
+                    <div class="grid-cell code-blue">1</div>
+                    <div class="grid-cell">0</div>
+                </div>
+            </div>
+            <div class="comparison-column">
+                <h3 class="text-center font-semibold text-red-600 mb-2">Convolución</h3>
+                <p class="text-center">\[(w * f)(x) = \sum_{s=-a}^{a} w(s)f(x-s)\]</p>
+                <div class="grid-display mx-auto mt-3">
+                    <div class="grid-cell">0</div>
+                    <div class="grid-cell code-red">1</div>
+                    <div class="grid-cell code-red">2</div>
+                    <div class="grid-cell code-red">4</div>
+                    <div class="grid-cell code-red">2</div>
+                    <div class="grid-cell code-red">8</div>
+                    <div class="grid-cell">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-4 right-4 text-sm text-gray-500">
+            <p>Página 4/10</p>
+        </div>
+    </div>
+
+    </script>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_pag_154_p5.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

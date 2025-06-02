@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrado Espacial vs Frecuencia</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .slide-container { width: 1280px; min-height: 720px; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0c0a09 0%, #1c1917 25%, #292524 50%, #44403c 75%, #57534e 100%);
+        }
+        
+        .domain-spatial {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 64, 175, 0.2));
+            border: 2px solid #3b82f6;
+        }
+        
+        .domain-frequency {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(185, 28, 28, 0.2));
+            border: 2px solid #ef4444;
+        }
+        
+        .duality-arrow {
+            animation: pulse-arrow 2s infinite;
+        }
+        
+        @keyframes pulse-arrow {
+            0%, 100% { transform: scale(1); color: #fbbf24; }
+            50% { transform: scale(1.1); color: #f59e0b; }
+        }
+        
+        .filter-visual {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: 2px solid #0ea5e9;
+        }
+        
+        .lowpass-rect {
+            background: linear-gradient(90deg, transparent 0%, #22c55e 20%, #22c55e 80%, transparent 100%);
+            height: 60px;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .spatial-wave {
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: draw-wave 3s ease-out infinite;
+        }
+        
+        @keyframes draw-wave {
+            0% { stroke-dashoffset: 300; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -300; }
+        }
+        
+        .fourier-transform {
+            animation: transform-glow 3s infinite alternate;
+        }
+        
+        @keyframes transform-glow {
+            from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            to { box-shadow: 0 0 40px rgba(239, 68, 68, 0.8); }
+        }
+        
+        .frequency-bands {
+            background: linear-gradient(90deg, 
+                #3b82f6 0%, #3b82f6 30%, 
+                #22c55e 30%, #22c55e 70%, 
+                #ef4444 70%, #ef4444 100%);
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .comparison-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 1.2s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 1.2s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .zoom-in {
+            animation: zoomIn 1s ease-out;
+        }
+        
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+</head>
+<body class="gradient-bg flex items-center justify-center">
+    <div class="slide-container p-6 text-white relative overflow-hidden">
+        
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-4 left-4 text-9xl mono transform rotate-45">⊗</div>
+            <div class="absolute bottom-4 right-4 text-9xl mono transform -rotate-45">𝑓</div>
+        </div>
+        
+        <!-- Header -->
+        <div class="text-center mb-6 zoom-in">
+            <h1 class="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 via-yellow-400 to-red-400 bg-clip-text text-transparent">
+                Filtrado: Dominio Espacial vs Frecuencia
+            </h1>
+            <div class="text-lg text-gray-300">Transformada de Fourier y Dualidad Computacional</div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-5 gap-4 h-full">
+            
+            <!-- Left Column: Spatial-Frequency Duality -->
+            <div class="col-span-2 space-y-4 slide-in-left">
+                
+                <!-- Fourier Transform Box -->
+                <div class="comparison-card rounded-xl p-4 fourier-transform">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-exchange-alt text-2xl text-yellow-400 mr-3 floating-icon"></i>
+                        <h2 class="text-xl font-bold">Transformada de Fourier</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="domain-spatial rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-blue-300 mb-2">ESPACIAL</div>
+                                <svg class="w-full h-16" viewBox="0 0 200 60">
+                                    <path class="spatial-wave" stroke="#3b82f6" stroke-width="2" fill="none" 
+                                          d="M10,30 Q30,10 50,30 T90,30 T130,30 T170,30 T190,30"/>
+                                    <text x="100" y="50" text-anchor="middle" fill="#94a3b8" font-size="10">f(x,y)</text>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="duality-arrow text-3xl">⇅</div>
+                            <div class="text-sm text-yellow-300 mono">FFT / IFFT</div>
+                        </div>
+                        
+                        <div class="domain-frequency rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-300 mb-2">FRECUENCIA</div>
+                                <svg class="w-full h-16" viewBox="0 0 200 60">
+                                    <rect x="80" y="20" width="40" height="20" fill="#ef4444" opacity="0.8"/>
+                                    <rect x="90" y="15" width="20" height="30" fill="#ef4444"/>
+                                    <text x="100" y="55" text-anchor="middle" fill="#94a3b8" font-size="10">F(u,v)</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Duality Principles -->
+                <div class="comparison-card rounded-xl p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-equals text-xl text-green-400 mr-3"></i>
+                        <h2 class="text-lg font-bold">Dualidad Fundamental</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-blue-900 bg-opacity-40 rounded-lg p-3">
+                            <div class="text-center text-sm">
+                                <div class="text-blue-300 font-bold mb-1">CONVOLUCIÓN ESPACIAL</div>
+                                <div class="mono text-xs">f ★ h</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center text-2xl text-yellow-400">=</div>
+                        
+                        <div class="bg-red-900 bg-opacity-40 rounded-lg p-3">
+                            <div class="text-center text-sm">
+                                <div class="text-red-300 font-bold mb-1">MULTIPLICACIÓN FRECUENCIA</div>
+                                <div class="mono text-xs">F × H</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Frequency Characteristics -->
+                <div class="comparison-card rounded-xl p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-wave-square text-xl text-purple-400 mr-3"></i>
+                        <h2 class="text-lg font-bold">Características</h2>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="frequency-bands"></div>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <div class="text-center">
+                                <div class="text-blue-300 font-bold">BAJAS</div>
+                                <div class="text-gray-400">Regiones suaves</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-green-300 font-bold">MEDIAS</div>
+                                <div class="text-gray-400">Texturas</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-red-300 font-bold">ALTAS</div>
+                                <div class="text-gray-400">Bordes/Ruido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center Column: Filter Visualization -->
+            <div class="col-span-1 zoom-in" style="animation-delay: 0.3s">
+                <div class="filter-visual rounded-xl p-4 h-full">
+                    <div class="text-center mb-4">
+                        <div class="flex items-center justify-center mb-2">
+                            <i class="fas fa-filter text-2xl text-cyan-400 mr-2"></i>
+                            <h2 class="text-lg font-bold">Filtro Lowpass Ideal</h2>
+                        </div>
+                        <div class="text-sm text-gray-400">Figura 3.32</div>
+                    </div>
+                    
+                    <!-- Frequency Domain Filter -->
+                    <div class="mb-6">
+                        <div class="text-sm text-center mb-2 text-cyan-300 font-bold">DOMINIO FRECUENCIA</div>
+                        <div class="bg-gray-900 rounded-lg p-4 relative">
+                            <svg class="w-full h-20" viewBox="0 0 200 80">
+                                <!-- Frequency axis -->
+                                <line x1="20" y1="70" x2="180" y2="70" stroke="#94a3b8" stroke-width="1"/>
+                                <text x="100" y="85" text-anchor="middle" fill="#94a3b8" font-size="10">u</text>
+                                
+                                <!-- Filter function -->
+                                <rect x="80" y="20" width="40" height="40" fill="#22c55e" opacity="0.8"/>
+                                <line x1="80" y1="20" x2="80" y2="70" stroke="#22c55e" stroke-width="2"/>
+                                <line x1="120" y1="20" x2="120" y2="70" stroke="#22c55e" stroke-width="2"/>
+                                
+                                <!-- Labels -->
+                                <text x="100" y="15" text-anchor="middle" fill="#22c55e" font-size="10">1</text>
+                                <text x="100" y="40" text-anchor="middle" fill="#ffffff" font-size="8">Passband</text>
+                                <text x="60" y="40" text-anchor="middle" fill="#94a3b8" font-size="8">Stopband</text>
+                                <text x="140" y="40" text-anchor="middle" fill="#94a3b8" font-size="8">Stopband</text>
+                                <text x="80" y="82" text-anchor="middle" fill="#22c55e" font-size="8">u₀</text>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow -->
+                    <div class="text-center mb-4">
+                        <div class="duality-arrow text-2xl">⇓</div>
+                        <div class="text-xs text-yellow-300 mono">IFFT</div>
+                    </div>
+                    
+                    <!-- Spatial Domain Response -->
+                    <div>
+                        <div class="text-sm text-center mb-2 text-blue-300 font-bold">DOMINIO ESPACIAL</div>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <svg class="w-full h-20" viewBox="0 0 200 80">
+                                <!-- Spatial axis -->
+                                <line x1="20" y1="70" x2="180" y2="70" stroke="#94a3b8" stroke-width="1"/>
+                                <text x="100" y="85" text-anchor="middle" fill="#94a3b8" font-size="10">x</text>
+                                
+                                <!-- Sinc function approximation -->
+                                <path stroke="#3b82f6" stroke-width="2" fill="none" 
+                                      d="M20,40 Q40,20 60,35 Q80,50 100,30 Q120,50 140,35 Q160,20 180,40"/>
+                                
+                                <!-- Central lobe -->
+                                <circle cx="100" cy="30" r="3" fill="#3b82f6"/>
+                                <text x="100" y="25" text-anchor="middle" fill="#3b82f6" font-size="8">ω₀</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Comparisons and Advantages -->
+            <div class="col-span-2 space-y-4 slide-in-right">
+                
+                <!-- Domain Comparison -->
+                <div class="comparison-card rounded-xl p-4">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-balance-scale text-2xl text-orange-400 mr-3"></i>
+                        <h2 class="text-xl font-bold">Comparación de Dominios</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Spatial Domain -->
+                        <div class="domain-spatial rounded-lg p-4">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-grid-3x3 text-2xl text-blue-400 mb-2"></i>
+                                <div class="font-bold text-blue-300">ESPACIAL</div>
+                            </div>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Kernels pequeños</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Filtros no-lineales</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Control local</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-times text-red-400 mr-2"></i>
+                                    <span>Kernels grandes</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Frequency Domain -->
+                        <div class="domain-frequency rounded-lg p-4">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-waveform text-2xl text-red-400 mb-2"></i>
+                                <div class="font-bold text-red-300">FRECUENCIA</div>
+                            </div>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Kernels grandes</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Filtros ideales</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-400 mr-2"></i>
+                                    <span>Análisis espectral</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-times text-red-400 mr-2"></i>
+                                    <span>Efectos de ringing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Computational Efficiency -->
+                <div class="comparison-card rounded-xl p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-tachometer-alt text-2xl text-green-400 mr-3"></i>
+                        <h2 class="text-lg font-bold">Eficiencia Computacional</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-blue-900 bg-opacity-40 rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-blue-300 mb-1">Convolución Espacial</div>
+                                <div class="text-2xl font-bold text-blue-400">O(N²M²)</div>
+                                <div class="text-sm text-gray-400">para kernel M×M</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-red-900 bg-opacity-40 rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-300 mb-1">FFT + Multiplicación</div>
+                                <div class="text-2xl font-bold text-red-400">O(N² log N)</div>
+                                <div class="text-sm text-gray-400">independiente de M</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Applications -->
+                <div class="comparison-card rounded-xl p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-cogs text-2xl text-purple-400 mr-3"></i>
+                        <h2 class="text-lg font-bold">Aplicaciones Clave</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="space-y-2">
+                            <div class="font-bold text-blue-300 mb-2">ESPACIAL</div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-blue-400 mr-2"></i>
+                                <span>Blur / Sharpen</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-blue-400 mr-2"></i>
+                                <span>Edge Detection</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-blue-400 mr-2"></i>
+                                <span>Morfología</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="font-bold text-red-300 mb-2">FRECUENCIA</div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-red-400 mr-2"></i>
+                                <span>Noise Removal</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-red-400 mr-2"></i>
+                                <span>Restauración</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dot-circle text-red-400 mr-2"></i>
+                                <span>Compresión</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Summary -->
+                <div class="bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 bg-opacity-40 rounded-xl p-4 text-center">
+                    <div class="text-lg font-bold text-yellow-300 mb-2">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        Concepto Clave
+                    </div>
+                    <div class="text-sm text-gray-300">
+                        La elección del dominio depende del <strong class="text-white">tamaño del kernel</strong> y el <strong class="text-white">tipo de operación</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Accent -->
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500"></div>
+    </div>
+</body>
+</html>

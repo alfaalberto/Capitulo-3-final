@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventajas Computacionales de Kernels Separables</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .slide-container { width: 1280px; min-height: 720px; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 75%, #475569 100%);
+        }
+        
+        .glow-effect {
+            animation: glow 3s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+            to { box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); }
+        }
+        
+        .slide-in-sequence {
+            animation: slideInSequence 1.5s ease-out;
+        }
+        
+        @keyframes slideInSequence {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 1s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .pulse-highlight {
+            animation: pulseHighlight 2s infinite;
+        }
+        
+        @keyframes pulseHighlight {
+            0%, 100% { background-color: rgba(34, 197, 94, 0.1); }
+            50% { background-color: rgba(34, 197, 94, 0.3); }
+        }
+        
+        .math-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .step-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border-left: 4px solid #22c55e;
+        }
+        
+        .comparison-bar {
+            background: linear-gradient(90deg, #ef4444 0%, #f97316 50%, #22c55e 100%);
+            height: 8px;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </script>
+</head>
+<body class="gradient-bg flex items-center justify-center">
+    <div class="slide-container p-6 text-white relative overflow-hidden">
+        
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-4 right-4 text-8xl mono transform rotate-12">★</div>
+            <div class="absolute bottom-4 left-4 text-8xl mono transform -rotate-12">⊗</div>
+        </div>
+        
+        <!-- Header -->
+        <div class="text-center mb-6 slide-in-sequence">
+            <h1 class="text-4xl font-bold mb-3 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                Ventajas Computacionales de Kernels Separables
+            </h1>
+            <div class="text-lg text-gray-300">Optimización y Proceso de Descomposición</div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="grid grid-cols-3 gap-6 h-full">
+            
+            <!-- Left Column: Convolution Equation -->
+            <div class="space-y-4">
+                <div class="math-card rounded-xl p-4 glow-effect">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-equals text-xl text-green-400 mr-2"></i>
+                        <h2 class="text-xl font-bold">Convolución Separable</h2>
+                    </div>
+                    
+                    <div class="text-center space-y-3">
+                        <div class="text-lg bg-gray-900 bg-opacity-60 rounded-lg p-3">
+
+                            $$w ★ f = (w_1 ★ w_2) ★ f$$
+                        </div>
+                        
+                        <div class="text-2xl text-green-400">=</div>
+                        
+                        <div class="text-lg bg-gray-900 bg-opacity-60 rounded-lg p-3">
+
+                            $$w_2 ★ (w_1 ★ f)$$
+                        </div>
+                        
+                        <div class="text-sm text-gray-400 mt-2">Ecuación (3-43)</div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-green-900 bg-opacity-30 rounded-lg">
+                        <div class="text-sm text-center">
+                            <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                            <strong>Conmutatividad:</strong> El orden no importa
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Comparison -->
+                <div class="math-card rounded-xl p-4 bounce-in">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-chart-bar text-xl text-blue-400 mr-2"></i>
+                        <h2 class="text-xl font-bold">Comparación</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-red-300 mb-1">Kernel Normal</div>
+                            <div class="text-3xl font-bold text-red-400">MNmn</div>
+                            <div class="text-sm text-gray-400">operaciones</div>
+                        </div>
+                        
+                        <div class="text-2xl text-center text-yellow-400">vs</div>
+                        
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-green-300 mb-1">Kernel Separable</div>
+                            <div class="text-3xl font-bold text-green-400">MN(m+n)</div>
+                            <div class="text-sm text-gray-400">operaciones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Middle Column: 3-Step Process -->
+            <div class="space-y-3">
+                <div class="math-card rounded-xl p-4">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-list-ol text-xl text-purple-400 mr-2"></i>
+                        <h2 class="text-xl font-bold">Proceso de Descomposición</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- Step 1 -->
+                        <div class="step-card rounded-lg p-3 slide-in-sequence" style="animation-delay: 0.2s">
+                            <div class="flex items-start">
+                                <div class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">1</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-green-300 mb-1">Encontrar Elemento</div>
+                                    <div class="text-sm text-gray-300">Cualquier elemento no cero del kernel</div>
+                                    <div class="text-xs mono mt-1 text-yellow-300">E = w[i,j] ≠ 0</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="step-card rounded-lg p-3 slide-in-sequence" style="animation-delay: 0.4s">
+                            <div class="flex items-start">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">2</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-blue-300 mb-1">Formar Vectores</div>
+                                    <div class="text-sm text-gray-300">c = columna, r = fila del elemento</div>
+                                    <div class="text-xs mono mt-1 text-yellow-300">c[k] = w[k,j]/E</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="step-card rounded-lg p-3 slide-in-sequence" style="animation-delay: 0.6s">
+                            <div class="flex items-start">
+                                <div class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-1">3</div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-purple-300 mb-1">Verificar</div>
+                                    <div class="text-sm text-gray-300">w = v·c y w^T = r/E</div>
+                                    <div class="text-xs mono mt-1 text-yellow-300">rank(w) = 1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rank Detection -->
+                <div class="math-card rounded-xl p-4 pulse-highlight">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-search text-xl text-orange-400 mr-2"></i>
+                        <h2 class="text-lg font-bold">Detección de Rango</h2>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-lg mb-2">Si <span class="mono text-yellow-300">rank(w) = 1</span></div>
+                        <div class="text-2xl font-bold text-green-400 mb-2">✓ SEPARABLE</div>
+                        <div class="text-sm text-gray-300">Las filas son linealmente dependientes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Numerical Examples -->
+            <div class="space-y-4">
+                <!-- Specific Examples -->
+                <div class="math-card rounded-xl p-4">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-calculator text-xl text-red-400 mr-2"></i>
+                        <h2 class="text-xl font-bold">Ejemplos Numéricos</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- 11x11 Example -->
+                        <div class="bg-red-900 bg-opacity-30 rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-300 mb-1">Kernel 11×11</div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-sm text-gray-300">Normal:</div>
+                                        <div class="mono text-sm">121 ops</div>
+                                    </div>
+                                    <div class="text-2xl">→</div>
+                                    <div>
+                                        <div class="text-sm text-gray-300">Separable:</div>
+                                        <div class="mono text-sm text-green-300">22 ops</div>
+                                    </div>
+                                </div>
+                                <div class="comparison-bar mt-2"></div>
+                                <div class="text-2xl font-bold text-green-400 mt-1">5.2× más rápido</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Large Kernel Example -->
+                        <div class="bg-orange-900 bg-opacity-30 rounded-lg p-3">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-orange-300 mb-1">Kernels Grandes</div>
+                                <div class="text-sm text-gray-300 mb-2">Cientos de elementos</div>
+                                <div class="text-3xl font-bold text-green-400">10+× reducción</div>
+                                <div class="text-sm text-gray-300 mt-1">en tiempo de ejecución</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Computational Formula -->
+                <div class="math-card rounded-xl p-4 glow-effect">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-formula text-xl text-yellow-400 mr-2"></i>
+                        <h2 class="text-lg font-bold">Factor de Mejora</h2>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-2xl bg-gray-900 bg-opacity-60 rounded-lg p-4 mb-3">
+
+                            $$C = \frac{mn}{m+n}$$
+                        </div>
+                        <div class="text-sm text-gray-400 mb-3">Ecuación (3-44)</div>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="bg-gray-800 rounded p-2">
+                                <div class="text-gray-300">M×N:</div>
+                                <div class="mono">Imagen</div>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <div class="text-gray-300">m×n:</div>
+                                <div class="mono">Kernel</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Benefits Summary -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-blue-900 bg-opacity-40 rounded-lg p-3 text-center">
+                        <i class="fas fa-memory text-xl text-blue-400 mb-2"></i>
+                        <div class="font-bold text-sm">Memoria</div>
+                        <div class="text-xs text-gray-300">O(m+n)</div>
+                    </div>
+                    <div class="bg-green-900 bg-opacity-40 rounded-lg p-3 text-center">
+                        <i class="fas fa-bolt text-xl text-green-400 mb-2"></i>
+                        <div class="font-bold text-sm">Velocidad</div>
+                        <div class="text-xs text-gray-300">5-50× faster</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Highlight -->
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500"></div>
+    </div>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_pag_161_p4.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

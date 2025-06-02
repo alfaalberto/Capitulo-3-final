@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correlación Espacial y Convolución - Página 2</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .title {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #3498db;
+            font-weight: 500;
+        }
+        .equation-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .key-point {
+            background-color: #e8f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2980b9;
+        }
+        .function-display {
+            font-family: monospace;
+            background: #f0f2f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        .grid-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 30px);
+            gap: 5px;
+            font-family: monospace;
+            justify-content: center;
+        }
+        .grid-cell {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+        }
+        .grid-cell-highlight {
+            background-color: #e8f4f8;
+            border: 1px solid #3498db;
+        }
+        .grid-label {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .step-container {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        .code-blue {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="slide flex flex-col">
+        <h1 class="title text-3xl">Correlación en Una Dimensión (1-D)</h1>
+        
+        <div class="my-4">
+            <h2 class="subtitle text-2xl mb-2">Formulación Matemática</h2>
+            <div class="equation-box">
+                <p>Para una correlación 1-D, podemos expresar la ecuación como:</p>
+                <p class="text-center my-3">\[g(x) = \sum_{s=-a}^{a} w(s)f(x+s) \quad \text{(Ecuación 3-32)}\]</p>
+                <p>Donde \(w\) es el kernel, \(f\) es la función de entrada, y \(g\) es el resultado de la correlación.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 my-4">
+            <div>
+                <h2 class="subtitle text-xl mb-2">Ejemplo de Correlación 1-D</h2>
+                <p class="mb-2">Consideremos:</p>
+                <ul class="list-disc pl-8 mb-4">
+                    <li>Una función \(f\) con un único valor de 1 (impulso unitario)</li>
+                    <li>Un kernel \(w\) de tamaño 1 × 5 (valores: 1 2 4 2 8)</li>
+                </ul>
+                
+                <div class="key-point">
+                    <p class="font-semibold">Paso 1: Alineación inicial</p>
+                    <p>Posicionamos \(w\) de modo que su coeficiente central coincida con el origen de \(f\).</p>
+                </div>
+                
+                <div class="key-point">
+                    <p class="font-semibold">Paso 2: Manejo de límites</p>
+                    <p>Para manejar valores fuera de los límites de \(f\), realizamos un "padding" añadiendo ceros.</p>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Representación Gráfica</h3>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="mb-3">
+                        <p class="text-center font-semibold">Función \(f\) y kernel \(w\)</p>
+                        <div class="step-container">
+                            <span class="grid-label">Origen \(f\):</span>
+                            <div class="grid-display">
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell grid-cell-highlight">1</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                            </div>
+                        </div>
+                        <div class="step-container">
+                            <span class="grid-label">Kernel \(w\):</span>
+                            <div class="grid-display">
+                                <div class="grid-cell code-blue">1</div>
+                                <div class="grid-cell code-blue">2</div>
+                                <div class="grid-cell code-blue">4</div>
+                                <div class="grid-cell code-blue">2</div>
+                                <div class="grid-cell code-blue">8</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <p class="text-center font-semibold">Posición inicial para correlación</p>
+                        <div class="step-container">
+                            <span class="grid-label">\(f\):</span>
+                            <div class="grid-display">
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell grid-cell-highlight">1</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                            </div>
+                        </div>
+                        <div class="step-container">
+                            <span class="grid-label">\(w\) alineado:</span>
+                            <div class="grid-display">
+                                <div class="grid-cell code-blue">1</div>
+                                <div class="grid-cell code-blue">2</div>
+                                <div class="grid-cell code-blue">4</div>
+                                <div class="grid-cell code-blue">2</div>
+                                <div class="grid-cell code-blue">8</div>
+                            </div>
+                            <span class="ml-2">← Alineamiento inicial</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <p class="text-center font-semibold">Función \(f\) con padding de ceros</p>
+                        <div class="step-container">
+                            <span class="grid-label">\(f\) con padding:</span>
+                            <div class="grid-display">
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell grid-cell-highlight">1</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                                <div class="grid-cell">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-point mt-2">
+            <p class="font-semibold">Observación importante:</p>
+            <p>Cuando parte del kernel \(w\) queda fuera de \(f\), la solución es añadir suficientes ceros (padding) a ambos lados de \(f\). Para un kernel de tamaño \(m\), necesitamos añadir \((m-1)/2\) ceros en cada lado.</p>
+        </div>
+
+        <div class="absolute bottom-4 right-4 text-sm text-gray-500">
+            <p>Página 2/10</p>
+        </div>
+    </div>
+
+    </script>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_3_4_pag_154_p3.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>

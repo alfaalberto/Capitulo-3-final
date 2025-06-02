@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Histogramas para Mejora de Imágenes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            margin: 0;
+            padding: 0;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .slide-header {
+            background: linear-gradient(90deg, #173e7b 0%, #2563eb 100%);
+            padding: 25px 60px;
+            color: white;
+        }
+        .slide-content {
+            display: flex;
+            padding: 20px 60px;
+            flex-grow: 1;
+        }
+        .formula-block {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .formula-notation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .equation-number {
+            color: #64748b;
+            font-size: 0.9rem;
+            padding-left: 10px;
+        }
+        .concept-card {
+            background-color: rgba(219, 234, 254, 0.4);
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        .concept-head {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+        .slide-footer {
+            background-color: #f3f4f6;
+            padding: 10px 60px;
+            font-size: 14px;
+            color: #6b7280;
+            text-align: right;
+            border-top: 1px solid #e5e7eb;
+        }
+
+.next-button {
+    position: absolute;
+    bottom: 50px; /* Ajustado */
+    right: 50px;
+    z-index: 20;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="text-3xl font-bold">Fundamentos Matemáticos de Estadísticas de Histograma</h1>
+            <p class="text-lg opacity-90">Definiciones y fórmulas para el análisis de intensidades de imagen</p>
+        </div>
+        
+        <div class="slide-content">
+            <div class="w-2/5 pr-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Conceptos fundamentales</h2>
+                
+                <div class="concept-card">
+                    <div class="concept-head">Histograma de imagen</div>
+                    <p>Distribución estadística de valores de intensidad en una imagen donde \(p(r_i)\) representa la probabilidad del valor de intensidad \(r_i\)</p>
+                </div>
+                
+                <div class="concept-card">
+                    <div class="concept-head">Aplicaciones estadísticas</div>
+                    <ul class="list-disc ml-5 space-y-1 text-gray-700">
+                        <li>Análisis global: estadísticas sobre toda la imagen</li>
+                        <li>Análisis local: estadísticas en vecindades de píxeles</li>
+                        <li>Identificación de regiones de bajo contraste</li>
+                        <li>Base para algoritmos de ecualización</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-5">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-lightbulb text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                Las estadísticas extraídas del histograma permiten desarrollar técnicas de mejora que se adaptan a las características específicas de cada imagen.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-3/5 pl-4">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Fórmulas estadísticas clave</h2>
+                
+                <div class="formula-block">
+                    <div class="formula-notation">
+                        <p><strong>n-ésimo momento:</strong> Define las características estadísticas de la distribución</p>
+                        <span class="equation-number">(3-24)</span>
+                    </div>
+                    <div class="text-center my-3">
+
+                        \[ \mu_n = \sum_{i=0}^{L-1} (r_i - m)^n p(r_i) \]
+                    </div>
+                </div>
+                
+                <div class="formula-block">
+                    <div class="formula-notation">
+                        <p><strong>Media (m):</strong> Promedio de intensidad en la imagen</p>
+                        <span class="equation-number">(3-25)</span>
+                    </div>
+                    <div class="text-center my-3">
+
+                        \[ m = \sum_{i=0}^{L-1} r_i p(r_i) \]
+                    </div>
+                </div>
+                
+                <div class="formula-block">
+                    <div class="formula-notation">
+                        <p><strong>Varianza (σ²):</strong> Mide el contraste en la imagen</p>
+                        <span class="equation-number">(3-26)</span>
+                    </div>
+                    <div class="text-center my-3">
+
+                        \[ \sigma^2 = \mu_2 = \sum_{i=0}^{L-1} (r_i - m)^2 p(r_i) \]
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 rounded-lg p-4 mt-4 flex items-center">
+                    <i class="fas fa-info-circle text-blue-600 text-2xl mr-3"></i>
+                    <p class="text-sm text-blue-800">
+                        Donde \(r\) representa valores de intensidad discretos en el rango [0, L-1] y \(p(r_i)\) es la probabilidad de ocurrencia del valor \(r_i\).
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-footer">
+            <p>Estadísticas de Histogramas para Mejora de Imágenes | 2</p>
+        </div>
+    </div>
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+<button onclick="irAPaginaSiguiente()" class="next-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300">
+    Siguiente <i class="fas fa-arrow-right ml-2"></i>
+</button>
+
+ <script>
+        // Nombre del siguiente archivo HTML
+        const siguientePaginaHTML = 'Tema_pag_150_p3.html'; // ¡CAMBIA ESTO AL NOMBRE DE TU SIGUIENTE HTML!
+
+        // Opción 1: Función para el botón
+        function irAPaginaSiguiente() {
+            window.location.href = siguientePaginaHTML;
+        }
+
+   </script>
+
+</body>
+</html>
